@@ -3,109 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Color &amp; Paint</title>
+
+<title>Color & Paint</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="app">
 
   <!-- HEADER -->
   <header class="app-header">
+
     <h1 class="title">🎨 COLOR &amp; PAINT</h1>
-    <p class="subtitle">Choose a color and bring the picture to life!</p>
+
+    <p class="subtitle">
+      Look at the sample and color the picture!
+    </p>
 
     <div class="stat-bar" role="status" aria-live="polite">
+
       <div class="stat-pill">
         <span class="stat-label">Level</span>
         <span class="stat-value" id="level-value">1</span>
       </div>
+
       <div class="stat-pill progress-pill">
-        <span class="stat-label">Painting Progress</span>
+
+        <span class="stat-label">
+          Painting Progress
+        </span>
+
         <div class="progress-track">
           <div class="progress-fill" id="progress-fill"></div>
         </div>
-        <span class="stat-value" id="progress-value">0%</span>
+
+        <span class="stat-value" id="progress-value">
+          0%
+        </span>
+
       </div>
+
       <div class="stat-pill">
-        <span class="stat-label">Areas Colored</span>
-        <span class="stat-value"><span id="colored-count">0</span>/<span id="total-count">0</span></span>
+
+        <span class="stat-label">
+          Areas Colored
+        </span>
+
+        <span class="stat-value">
+          <span id="colored-count">0</span>/
+          <span id="total-count">0</span>
+        </span>
+
       </div>
+
       <div class="stat-pill">
-        <span class="stat-label">Score</span>
-        <span class="stat-value" id="score-value">0</span>
+
+        <span class="stat-label">
+          Score
+        </span>
+
+        <span class="stat-value" id="score-value">
+          0
+        </span>
+
       </div>
+
     </div>
+
   </header>
 
+
+  <!-- MAIN -->
   <main class="main-grid">
 
-    <!-- LEFT: canvas + palette -->
+    <!-- LEFT SIDE -->
     <section class="canvas-column">
 
       <div class="canvas-card">
+
+        <!-- TOOLBAR -->
         <div class="canvas-toolbar">
-          <span class="selected-color-label" id="selected-color-label">Selected Color: none yet — pick one below!</span>
-          <button class="ghost-btn" id="before-after-btn" aria-label="Toggle before and after view">👁 Before / After</button>
+
+          <span
+            class="selected-color-label"
+            id="selected-color-label"
+          >
+            Selected Color: none yet — pick one below!
+          </span>
+
+          <button
+            class="ghost-btn"
+            id="before-after-btn"
+            aria-label="Toggle before and after view"
+          >
+            👁 Before / After
+          </button>
+
         </div>
 
-        <div class="challenge-banner" id="challenge-banner" hidden>
+
+        <!-- CHALLENGE -->
+        <div
+          class="challenge-banner"
+          id="challenge-banner"
+          hidden
+        >
           <span id="challenge-text"></span>
         </div>
 
-        <div class="svg-wrap">
-          <svg id="coloring-svg" viewBox="0 0 400 400" role="img" aria-label="Coloring picture"></svg>
-          <div class="sparkle-layer" id="sparkle-layer" aria-hidden="true"></div>
+
+        <!-- SAMPLE + COLORING -->
+        <div class="painting-area">
+
+
+          <!-- SAMPLE IMAGE -->
+          <div class="sample-card">
+
+            <div class="sample-heading">
+              <span>🖼️</span>
+              <span>Sample Image</span>
+            </div>
+
+            <div
+              id="reference-panel"
+              class="reference-panel"
+            >
+            </div>
+
+            <p class="sample-help">
+              Look at the sample and use the same
+              colors on the picture.
+            </p>
+
+          </div>
+
+
+          <!-- USER COLORING -->
+          <div class="coloring-card">
+
+            <div class="coloring-heading">
+              <span>🎨</span>
+              <span>Color This Picture</span>
+            </div>
+
+            <div class="svg-wrap">
+
+              <svg
+                id="coloring-svg"
+                viewBox="0 0 300 270"
+                role="img"
+                aria-label="Coloring picture"
+              >
+              </svg>
+
+              <div
+                class="sparkle-layer"
+                id="sparkle-layer"
+                aria-hidden="true"
+              >
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="mode-row" role="group" aria-label="Coloring tools">
-          <button class="tool-btn active" id="paint-btn" aria-pressed="true">🎨 Paint</button>
-          <button class="tool-btn" id="eraser-btn" aria-pressed="false">🧹 Eraser</button>
-          <button class="tool-btn" id="challenge-btn" aria-pressed="false">🌈 Color Challenge</button>
+
+        <!-- TOOLS -->
+        <div
+          class="mode-row"
+          role="group"
+          aria-label="Coloring tools"
+        >
+
+          <button
+            class="tool-btn active"
+            id="paint-btn"
+            aria-pressed="true"
+          >
+            🎨 Paint
+          </button>
+
+          <button
+            class="tool-btn"
+            id="eraser-btn"
+            aria-pressed="false"
+          >
+            🧹 Eraser
+          </button>
+
+          <button
+            class="tool-btn"
+            id="challenge-btn"
+            aria-pressed="false"
+          >
+            🌈 Color Challenge
+          </button>
+
         </div>
+
       </div>
 
+
+      <!-- PALETTE -->
       <div class="palette-card">
-        <h2 class="section-heading">Color Palette</h2>
-        <div class="palette-grid" id="palette-grid" role="group" aria-label="Color palette"></div>
+
+        <h2 class="section-heading">
+          Color Palette
+        </h2>
+
+        <div
+          class="palette-grid"
+          id="palette-grid"
+          role="group"
+          aria-label="Color palette"
+        >
+        </div>
+
       </div>
 
+
+      <!-- ACTION BUTTONS -->
       <div class="actions-row">
-        <button class="action-btn" id="reset-btn">↻ Reset Picture</button>
-        <button class="action-btn accent" id="new-picture-btn">🎲 New Picture</button>
-        <button class="action-btn subtle" id="clear-progress-btn">🗑 Clear Progress</button>
+
+        <button
+          class="action-btn"
+          id="reset-btn"
+        >
+          ↻ Reset Picture
+        </button>
+
+        <button
+          class="action-btn accent"
+          id="new-picture-btn"
+        >
+          🎲 New Picture
+        </button>
+
+        <button
+          class="action-btn subtle"
+          id="clear-progress-btn"
+        >
+          🗑 Clear Progress
+        </button>
+
       </div>
+
     </section>
 
-    <!-- RIGHT: gallery -->
+
+    <!-- RIGHT SIDE -->
     <aside class="gallery-column">
-      <h2 class="section-heading">Picture Library</h2>
-      <div class="gallery-grid" id="gallery-grid" role="listbox" aria-label="Choose a picture"></div>
+
+      <h2 class="section-heading">
+        Picture Library
+      </h2>
+
+      <div
+        class="gallery-grid"
+        id="gallery-grid"
+        role="listbox"
+        aria-label="Choose a picture"
+      >
+      </div>
+
     </aside>
 
   </main>
 
+
+  <!-- FOOTER -->
   <footer class="app-footer">
-    <p>Made for little (and big) artists · your painting saves automatically ✨</p>
+
+    <p>
+      Made for little (and big) artists ·
+      your painting saves automatically ✨
+    </p>
+
   </footer>
+
 </div>
 
-<!-- COMPLETION OVERLAY -->
-<div class="overlay" id="completion-overlay" hidden>
-  <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
-  <div class="completion-card">
-    <h2>🎉 Amazing!</h2>
-    <p>You completed the picture!</p>
-    <p class="score-line">COLORING SCORE: <span id="final-score">100</span>/100</p>
-    <button class="action-btn accent" id="next-picture-btn">➡️ Next Picture</button>
+
+<!-- COMPLETION POPUP -->
+<div
+  class="overlay"
+  id="completion-overlay"
+  hidden
+>
+
+  <div
+    class="confetti-layer"
+    id="confetti-layer"
+    aria-hidden="true"
+  >
   </div>
+
+  <div class="completion-card">
+
+    <h2>🎉 Amazing!</h2>
+
+    <p>
+      You completed the picture!
+    </p>
+
+    <p class="score-line">
+
+      COLORING SCORE:
+
+      <span id="final-score">
+        100
+      </span>/100
+
+    </p>
+
+    <button
+      class="action-btn accent"
+      id="next-picture-btn"
+    >
+      ➡️ Next Picture
+    </button>
+
+  </div>
+
 </div>
 
-<div class="toast" id="toast" role="alert" aria-live="assertive" hidden></div>
+
+<!-- TOAST -->
+<div
+  class="toast"
+  id="toast"
+  role="alert"
+  aria-live="assertive"
+  hidden
+>
+</div>
+
 
 <script src="script.js" defer></script>
+
 </body>
 </html>
