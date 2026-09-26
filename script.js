@@ -1,594 +1,1543 @@
-/* =========================================================
-   COLOR & PAINT — game logic
-   Pictures are stored as structured SVG region data so new
-   pictures can be added easily. Each region has:
-     id           unique string id (must be unique per picture)
-     label        human-readable name (used in Challenge Mode)
-     tag          "path" | "circle" | "ellipse" | "rect" | "polygon"
-     attrs        object of SVG attributes for that shape
-     colorTarget  "fill" (default) or "stroke" — which attribute
-                  gets painted (rainbow bands are stroked arcs)
-   ========================================================= */
+// ============================================================
+// COLOR & PAINT - FINAL SCRIPT
+// ============================================================
+
+"use strict";
+
+// ============================================================
+// 1. COLOR PALETTE
+// ============================================================
+
+const PALETTE = [
+  { name: "Red", hex: "#ef4444" },
+  { name: "Orange", hex: "#f97316" },
+  { name: "Yellow", hex: "#facc15" },
+  { name: "Green", hex: "#22c55e" },
+  { name: "Blue", hex: "#3b82f6" },
+  { name: "Purple", hex: "#a855f7" },
+  { name: "Pink", hex: "#ec4899" },
+  { name: "Brown", hex: "#92400e" },
+  { name: "Black", hex: "#111827" },
+  { name: "White", hex: "#ffffff" }
+];
+
+
+// ============================================================
+// 2. PICTURES
+// ============================================================
 
 const PICTURES = [
+
+  // ----------------------------------------------------------
+  // FLOWER
+  // ----------------------------------------------------------
   {
     id: "flower",
-    name: "Flower",
+    title: "Beautiful Flower",
     emoji: "🌸",
-    viewBox: "0 0 400 400",
+
     regions: [
-      { id: "stem", label: "stem", tag: "rect", attrs: { x: 190, y: 220, width: 20, height: 150, rx: 6 } },
-      { id: "leaf1", label: "left leaf", tag: "ellipse", attrs: { cx: 160, cy: 292, rx: 36, ry: 16, transform: "rotate(-30 160 292)" } },
-      { id: "leaf2", label: "right leaf", tag: "ellipse", attrs: { cx: 240, cy: 292, rx: 36, ry: 16, transform: "rotate(30 240 292)" } },
-      { id: "petal1", label: "top petal", tag: "circle", attrs: { cx: 200, cy: 80, r: 38 } },
-      { id: "petal2", label: "upper right petal", tag: "circle", attrs: { cx: 266, cy: 128, r: 38 } },
-      { id: "petal3", label: "lower right petal", tag: "circle", attrs: { cx: 241, cy: 207, r: 38 } },
-      { id: "petal4", label: "lower left petal", tag: "circle", attrs: { cx: 159, cy: 207, r: 38 } },
-      { id: "petal5", label: "upper left petal", tag: "circle", attrs: { cx: 134, cy: 128, r: 38 } },
-      { id: "center", label: "flower center", tag: "circle", attrs: { cx: 200, cy: 150, r: 34 } }
+      {
+        id: "petal1",
+        name: "Petal 1",
+        type: "ellipse",
+        attrs: { cx: 150, cy: 80, rx: 35, ry: 55 }
+      },
+      {
+        id: "petal2",
+        name: "Petal 2",
+        type: "ellipse",
+        attrs: { cx: 210, cy: 80, rx: 35, ry: 55 }
+      },
+      {
+        id: "petal3",
+        name: "Petal 3",
+        type: "ellipse",
+        attrs: { cx: 120, cy: 130, rx: 35, ry: 55 }
+      },
+      {
+        id: "petal4",
+        name: "Petal 4",
+        type: "ellipse",
+        attrs: { cx: 240, cy: 130, rx: 35, ry: 55 }
+      },
+      {
+        id: "petal5",
+        name: "Petal 5",
+        type: "ellipse",
+        attrs: { cx: 180, cy: 155, rx: 35, ry: 55 }
+      },
+      {
+        id: "center",
+        name: "Flower Center",
+        type: "circle",
+        attrs: { cx: 180, cy: 115, r: 35 }
+      },
+      {
+        id: "stem",
+        name: "Stem",
+        type: "rect",
+        attrs: { x: 170, y: 145, width: 20, height: 150, rx: 8 }
+      },
+      {
+        id: "leaf1",
+        name: "Leaf 1",
+        type: "ellipse",
+        attrs: { cx: 135, cy: 220, rx: 55, ry: 25 }
+      },
+      {
+        id: "leaf2",
+        name: "Leaf 2",
+        type: "ellipse",
+        attrs: { cx: 225, cy: 250, rx: 55, ry: 25 }
+      }
     ]
   },
+
+
+  // ----------------------------------------------------------
+  // BUTTERFLY
+  // ----------------------------------------------------------
   {
     id: "butterfly",
-    name: "Butterfly",
+    title: "Cute Butterfly",
     emoji: "🦋",
-    viewBox: "0 0 400 400",
+
     regions: [
-      { id: "wing-tl", label: "top left wing", tag: "ellipse", attrs: { cx: 138, cy: 148, rx: 72, ry: 58 } },
-      { id: "wing-tr", label: "top right wing", tag: "ellipse", attrs: { cx: 262, cy: 148, rx: 72, ry: 58 } },
-      { id: "wing-bl", label: "bottom left wing", tag: "ellipse", attrs: { cx: 152, cy: 252, rx: 55, ry: 46 } },
-      { id: "wing-br", label: "bottom right wing", tag: "ellipse", attrs: { cx: 248, cy: 252, rx: 55, ry: 46 } },
-      { id: "antenna-l", label: "left antenna", tag: "path", attrs: { d: "M195,110 L172,64 L182,60 L200,104 Z" } },
-      { id: "antenna-r", label: "right antenna", tag: "path", attrs: { d: "M205,110 L228,64 L218,60 L200,104 Z" } },
-      { id: "body", label: "body", tag: "ellipse", attrs: { cx: 200, cy: 200, rx: 14, ry: 92 } }
+      {
+        id: "topLeftWing",
+        name: "Top Left Wing",
+        type: "ellipse",
+        attrs: { cx: 125, cy: 100, rx: 65, ry: 75 }
+      },
+      {
+        id: "topRightWing",
+        name: "Top Right Wing",
+        type: "ellipse",
+        attrs: { cx: 235, cy: 100, rx: 65, ry: 75 }
+      },
+      {
+        id: "bottomLeftWing",
+        name: "Bottom Left Wing",
+        type: "ellipse",
+        attrs: { cx: 130, cy: 190, rx: 55, ry: 65 }
+      },
+      {
+        id: "bottomRightWing",
+        name: "Bottom Right Wing",
+        type: "ellipse",
+        attrs: { cx: 230, cy: 190, rx: 55, ry: 65 }
+      },
+      {
+        id: "body",
+        name: "Body",
+        type: "ellipse",
+        attrs: { cx: 180, cy: 145, rx: 18, ry: 85 }
+      },
+      {
+        id: "head",
+        name: "Head",
+        type: "circle",
+        attrs: { cx: 180, cy: 55, r: 22 }
+      }
     ]
   },
+
+
+  // ----------------------------------------------------------
+  // RAINBOW
+  // ----------------------------------------------------------
   {
     id: "rainbow",
-    name: "Rainbow",
+    title: "Rainbow",
     emoji: "🌈",
-    viewBox: "0 0 400 320",
+
     regions: [
-      { id: "band1", label: "outer rainbow band", tag: "path", attrs: { d: "M30,300 A170,170 0 0 1 370,300", "stroke-width": 32, fill: "none" }, colorTarget: "stroke" },
-      { id: "band2", label: "second rainbow band", tag: "path", attrs: { d: "M60,300 A140,140 0 0 1 340,300", "stroke-width": 32, fill: "none" }, colorTarget: "stroke" },
-      { id: "band3", label: "third rainbow band", tag: "path", attrs: { d: "M90,300 A110,110 0 0 1 310,300", "stroke-width": 32, fill: "none" }, colorTarget: "stroke" },
-      { id: "band4", label: "inner rainbow band", tag: "path", attrs: { d: "M120,300 A80,80 0 0 1 280,300", "stroke-width": 32, fill: "none" }, colorTarget: "stroke" },
-      { id: "cloud1", label: "left cloud", tag: "ellipse", attrs: { cx: 65, cy: 95, rx: 52, ry: 27 } },
-      { id: "cloud2", label: "right cloud", tag: "ellipse", attrs: { cx: 60, cy: 230, rx: 46, ry: 22 } },
-      { id: "sun", label: "sun", tag: "circle", attrs: { cx: 335, cy: 75, r: 36 } }
+      {
+        id: "redBand",
+        name: "Red Band",
+        type: "path",
+        attrs: {
+          d: "M60 210 A120 120 0 0 1 300 210 L280 210 A100 100 0 0 0 80 210 Z"
+        }
+      },
+      {
+        id: "orangeBand",
+        name: "Orange Band",
+        type: "path",
+        attrs: {
+          d: "M80 210 A100 100 0 0 1 280 210 L260 210 A80 80 0 0 0 100 210 Z"
+        }
+      },
+      {
+        id: "yellowBand",
+        name: "Yellow Band",
+        type: "path",
+        attrs: {
+          d: "M100 210 A80 80 0 0 1 260 210 L240 210 A60 60 0 0 0 120 210 Z"
+        }
+      },
+      {
+        id: "greenBand",
+        name: "Green Band",
+        type: "path",
+        attrs: {
+          d: "M120 210 A60 60 0 0 1 240 210 L220 210 A40 40 0 0 0 140 210 Z"
+        }
+      },
+      {
+        id: "leftCloud",
+        name: "Left Cloud",
+        type: "ellipse",
+        attrs: { cx: 65, cy: 215, rx: 55, ry: 28 }
+      },
+      {
+        id: "rightCloud",
+        name: "Right Cloud",
+        type: "ellipse",
+        attrs: { cx: 295, cy: 215, rx: 55, ry: 28 }
+      },
+      {
+        id: "sun",
+        name: "Sun",
+        type: "circle",
+        attrs: { cx: 180, cy: 55, r: 30 }
+      }
     ]
   },
+
+
+  // ----------------------------------------------------------
+  // HOUSE
+  // ----------------------------------------------------------
   {
     id: "house",
-    name: "House",
+    title: "Little House",
     emoji: "🏠",
-    viewBox: "0 0 400 400",
+
     regions: [
-      { id: "roof", label: "roof", tag: "polygon", attrs: { points: "70,180 200,80 330,180" } },
-      { id: "wall", label: "walls", tag: "rect", attrs: { x: 90, y: 180, width: 220, height: 160 } },
-      { id: "door", label: "door", tag: "rect", attrs: { x: 180, y: 258, width: 50, height: 82, rx: 4 } },
-      { id: "window-l", label: "left window", tag: "rect", attrs: { x: 112, y: 202, width: 48, height: 48, rx: 4 } },
-      { id: "window-r", label: "right window", tag: "rect", attrs: { x: 240, y: 202, width: 48, height: 48, rx: 4 } },
-      { id: "tree-crown", label: "tree", tag: "circle", attrs: { cx: 352, cy: 250, r: 38 } },
-      { id: "tree-trunk", label: "tree trunk", tag: "rect", attrs: { x: 342, y: 288, width: 20, height: 48 } },
-      { id: "grass", label: "grass", tag: "rect", attrs: { x: 0, y: 340, width: 400, height: 60 } }
+      {
+        id: "roof",
+        name: "Roof",
+        type: "polygon",
+        attrs: {
+          points: "70,150 180,60 290,150"
+        }
+      },
+      {
+        id: "wall",
+        name: "Wall",
+        type: "rect",
+        attrs: {
+          x: 90,
+          y: 145,
+          width: 180,
+          height: 130
+        }
+      },
+      {
+        id: "door",
+        name: "Door",
+        type: "rect",
+        attrs: {
+          x: 155,
+          y: 195,
+          width: 50,
+          height: 80
+        }
+      },
+      {
+        id: "windowLeft",
+        name: "Left Window",
+        type: "rect",
+        attrs: {
+          x: 110,
+          y: 175,
+          width: 40,
+          height: 40
+        }
+      },
+      {
+        id: "windowRight",
+        name: "Right Window",
+        type: "rect",
+        attrs: {
+          x: 220,
+          y: 175,
+          width: 40,
+          height: 40
+        }
+      },
+      {
+        id: "tree",
+        name: "Tree",
+        type: "circle",
+        attrs: {
+          cx: 45,
+          cy: 180,
+          r: 35
+        }
+      },
+      {
+        id: "trunk",
+        name: "Tree Trunk",
+        type: "rect",
+        attrs: {
+          x: 35,
+          y: 210,
+          width: 20,
+          height: 70
+        }
+      },
+      {
+        id: "grass",
+        name: "Grass",
+        type: "rect",
+        attrs: {
+          x: 20,
+          y: 275,
+          width: 300,
+          height: 25
+        }
+      }
     ]
   },
+
+
+  // ----------------------------------------------------------
+  // FISH
+  // ----------------------------------------------------------
   {
     id: "fish",
-    name: "Fish",
+    title: "Happy Fish",
     emoji: "🐟",
-    viewBox: "0 0 400 300",
+
     regions: [
-      { id: "tail", label: "tail", tag: "polygon", attrs: { points: "292,150 362,100 362,200" } },
-      { id: "fin-top", label: "top fin", tag: "polygon", attrs: { points: "150,90 190,40 220,92" } },
-      { id: "fin-bottom", label: "bottom fin", tag: "polygon", attrs: { points: "150,210 190,262 220,208" } },
-      { id: "body", label: "body", tag: "ellipse", attrs: { cx: 180, cy: 150, rx: 112, ry: 70 } },
-      { id: "eye", label: "eye", tag: "circle", attrs: { cx: 118, cy: 128, r: 13 } },
-      { id: "bubble1", label: "big bubble", tag: "circle", attrs: { cx: 340, cy: 58, r: 11 } },
-      { id: "bubble2", label: "medium bubble", tag: "circle", attrs: { cx: 366, cy: 90, r: 7 } },
-      { id: "bubble3", label: "small bubble", tag: "circle", attrs: { cx: 318, cy: 38, r: 6 } }
+      {
+        id: "fishBody",
+        name: "Fish Body",
+        type: "ellipse",
+        attrs: {
+          cx: 180,
+          cy: 150,
+          rx: 90,
+          ry: 55
+        }
+      },
+      {
+        id: "tail",
+        name: "Tail",
+        type: "polygon",
+        attrs: {
+          points: "90,150 35,105 35,195"
+        }
+      },
+      {
+        id: "topFin",
+        name: "Top Fin",
+        type: "polygon",
+        attrs: {
+          points: "165,100 190,55 215,105"
+        }
+      },
+      {
+        id: "bottomFin",
+        name: "Bottom Fin",
+        type: "polygon",
+        attrs: {
+          points: "165,200 190,245 215,195"
+        }
+      },
+      {
+        id: "eye",
+        name: "Eye",
+        type: "circle",
+        attrs: {
+          cx: 220,
+          cy: 135,
+          r: 10
+        }
+      },
+      {
+        id: "bubble1",
+        name: "Bubble 1",
+        type: "circle",
+        attrs: {
+          cx: 275,
+          cy: 85,
+          r: 12
+        }
+      },
+      {
+        id: "bubble2",
+        name: "Bubble 2",
+        type: "circle",
+        attrs: {
+          cx: 305,
+          cy: 55,
+          r: 8
+        }
+      }
     ]
   },
+
+
+  // ----------------------------------------------------------
+  // APPLE
+  // ----------------------------------------------------------
   {
     id: "apple",
-    name: "Apple",
+    title: "Red Apple",
     emoji: "🍎",
-    viewBox: "0 0 300 300",
+
     regions: [
-      { id: "apple-left", label: "left side of the apple", tag: "path", attrs: { d: "M150,90 C95,55 35,95 40,155 C45,215 95,255 150,255 L150,90 Z" } },
-      { id: "apple-right", label: "right side of the apple", tag: "path", attrs: { d: "M150,90 C205,55 265,95 260,155 C255,215 205,255 150,255 L150,90 Z" } },
-      { id: "leaf", label: "leaf", tag: "path", attrs: { d: "M160,58 C182,36 206,46 200,68 C194,90 166,86 160,58 Z" } },
-      { id: "stem", label: "stem", tag: "rect", attrs: { x: 144, y: 36, width: 12, height: 34, rx: 4 } },
-      { id: "shine", label: "shine spot", tag: "ellipse", attrs: { cx: 108, cy: 120, rx: 14, ry: 22, transform: "rotate(-20 108 120)" } }
+      {
+        id: "appleBody",
+        name: "Apple",
+        type: "path",
+        attrs: {
+          d: "M180 110 C125 60 55 105 75 175 C90 235 140 260 180 230 C220 260 270 235 285 175 C305 105 235 60 180 110 Z"
+        }
+      },
+      {
+        id: "leaf",
+        name: "Leaf",
+        type: "ellipse",
+        attrs: {
+          cx: 220,
+          cy: 65,
+          rx: 45,
+          ry: 18,
+          transform: "rotate(-25 220 65)"
+        }
+      },
+      {
+        id: "stem",
+        name: "Stem",
+        type: "rect",
+        attrs: {
+          x: 174,
+          y: 45,
+          width: 12,
+          height: 55,
+          rx: 5
+        }
+      },
+      {
+        id: "shine",
+        name: "Shine",
+        type: "ellipse",
+        attrs: {
+          cx: 125,
+          cy: 145,
+          rx: 15,
+          ry: 30
+        }
+      }
     ]
   }
 ];
 
-const PALETTE = [
-  { name: "Red", hex: "#FF6B6B" },
-  { name: "Pink", hex: "#FF8FB1" },
-  { name: "Orange", hex: "#FFA94D" },
-  { name: "Yellow", hex: "#FFD93D" },
-  { name: "Green", hex: "#6BCB77" },
-  { name: "Light Green", hex: "#B2F2BB" },
-  { name: "Blue", hex: "#4FC3F7" },
-  { name: "Sky Blue", hex: "#A5D8FF" },
-  { name: "Purple", hex: "#9775FA" },
-  { name: "Violet", hex: "#DA77F2" },
-  { name: "Brown", hex: "#A97455" },
-  { name: "Black", hex: "#2B2B2B" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Gray", hex: "#ADB5BD" }
-];
 
-const SAVE_KEY = "colorAndPaintSave_v1";
+// ============================================================
+// 3. CORRECT COLORS
+// ============================================================
 
-/* ---------------- state ---------------- */
-let state = {
-  pictureIndex: 0,
-  mode: "paint",          // "paint" | "erase"
-  selectedColorHex: null,
-  selectedColorName: null,
-  score: 0,
-  colors: {},             // regionId -> hex   (for the CURRENT picture)
-  challengeMode: false,
-  challengeTargets: {},   // regionId -> colorName, only for uncolored regions
-  showingAfter: true      // before/after toggle (after = colored view is just the live canvas)
+const REFERENCE_COLORS = {
+
+  flower: {
+    petal1: "Pink",
+    petal2: "Pink",
+    petal3: "Pink",
+    petal4: "Pink",
+    petal5: "Pink",
+    center: "Yellow",
+    stem: "Green",
+    leaf1: "Green",
+    leaf2: "Green"
+  },
+
+  butterfly: {
+    topLeftWing: "Purple",
+    topRightWing: "Purple",
+    bottomLeftWing: "Pink",
+    bottomRightWing: "Pink",
+    body: "Black",
+    head: "Black"
+  },
+
+  rainbow: {
+    redBand: "Red",
+    orangeBand: "Orange",
+    yellowBand: "Yellow",
+    greenBand: "Green",
+    leftCloud: "White",
+    rightCloud: "White",
+    sun: "Yellow"
+  },
+
+  house: {
+    roof: "Red",
+    wall: "Yellow",
+    door: "Brown",
+    windowLeft: "Blue",
+    windowRight: "Blue",
+    tree: "Green",
+    trunk: "Brown",
+    grass: "Green"
+  },
+
+  fish: {
+    fishBody: "Blue",
+    tail: "Orange",
+    topFin: "Orange",
+    bottomFin: "Orange",
+    eye: "Black",
+    bubble1: "Blue",
+    bubble2: "Blue"
+  },
+
+  apple: {
+    appleBody: "Red",
+    leaf: "Green",
+    stem: "Brown",
+    shine: "White"
+  }
 };
 
-let lastPictureIndex = -1;
 
-/* ---------------- DOM refs ---------------- */
+// ============================================================
+// 4. GAME STATE
+// ============================================================
+
+const SAVE_KEY = "colorAndPaintFinal_v1";
+
+let state = {
+  currentPicture: 0,
+  selectedColorName: null,
+  selectedColorHex: null,
+
+  colored: {},
+  correctRegions: {},
+
+  score: 0,
+  challengeMode: false,
+  challengeTargets: {}
+};
+
+
+// ============================================================
+// 5. DOM ELEMENTS
+// ============================================================
+
 const svgEl = document.getElementById("coloring-svg");
-const paletteGrid = document.getElementById("palette-grid");
-const galleryGrid = document.getElementById("gallery-grid");
-const selectedColorLabel = document.getElementById("selected-color-label");
-const levelValue = document.getElementById("level-value");
-const progressFill = document.getElementById("progress-fill");
-const progressValue = document.getElementById("progress-value");
-const coloredCountEl = document.getElementById("colored-count");
-const totalCountEl = document.getElementById("total-count");
-const scoreValue = document.getElementById("score-value");
+const paletteEl = document.getElementById("palette");
+
+const levelEl = document.getElementById("level");
+const progressEl = document.getElementById("progress");
+const areasEl = document.getElementById("areas-colored");
+const scoreEl = document.getElementById("score");
+
 const paintBtn = document.getElementById("paint-btn");
 const eraserBtn = document.getElementById("eraser-btn");
 const challengeBtn = document.getElementById("challenge-btn");
-const challengeBanner = document.getElementById("challenge-banner");
-const challengeText = document.getElementById("challenge-text");
+
 const resetBtn = document.getElementById("reset-btn");
 const newPictureBtn = document.getElementById("new-picture-btn");
 const clearProgressBtn = document.getElementById("clear-progress-btn");
-const beforeAfterBtn = document.getElementById("before-after-btn");
+
+const galleryEl = document.getElementById("gallery");
+
 const completionOverlay = document.getElementById("completion-overlay");
-const finalScoreEl = document.getElementById("final-score");
 const nextPictureBtn = document.getElementById("next-picture-btn");
-const sparkleLayer = document.getElementById("sparkle-layer");
-const confettiLayer = document.getElementById("confetti-layer");
+
 const toastEl = document.getElementById("toast");
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------------- init ---------------- */
+// ============================================================
+// 6. INITIALIZATION
+// ============================================================
+
 function init() {
+
+  loadState();
+
+  if (
+    state.currentPicture < 0 ||
+    state.currentPicture >= PICTURES.length
+  ) {
+    state.currentPicture = 0;
+  }
+
+  state.selectedColorName = null;
+  state.selectedColorHex = null;
+
   buildPalette();
   buildGallery();
-  attachControlEvents();
-  const restored = loadFromStorage();
-  loadPicture(restored ? restored.pictureIndex : 0, !restored);
-  if (restored) {
-    state.colors = restored.colors || {};
-    state.score = restored.score || 0;
-    applyStoredColors();
-  }
-  updateHUD();
+  renderPicture();
+  updateUI();
+
+  hideCompletion();
+
+  if (paintBtn) paintBtn.classList.add("active");
 }
 
-/* ---------------- palette ---------------- */
+document.addEventListener("DOMContentLoaded", init);
+
+
+// ============================================================
+// 7. CURRENT PICTURE
+// ============================================================
+
+function getCurrentPicture() {
+  return PICTURES[state.currentPicture];
+}
+
+
+// ============================================================
+// 8. BUILD PALETTE
+// ============================================================
+
 function buildPalette() {
-  paletteGrid.innerHTML = "";
-  PALETTE.forEach((c) => {
-    const btn = document.createElement("button");
-    btn.className = "color-swatch";
-    btn.style.background = c.hex;
-    btn.setAttribute("data-color", c.hex);
-    btn.setAttribute("data-name", c.name);
-    btn.setAttribute("aria-label", "Select color " + c.name);
-    btn.addEventListener("click", () => selectColor(c));
-    paletteGrid.appendChild(btn);
-  });
-}
 
-function selectColor(colorObj) {
-  state.selectedColorHex = colorObj.hex;
-  state.selectedColorName = colorObj.name;
-  state.mode = "paint";
-  refreshModeButtons();
-  [...paletteGrid.children].forEach((el) => {
-    el.classList.toggle("selected", el.getAttribute("data-color") === colorObj.hex);
-  });
-  selectedColorLabel.textContent = "Selected Color: " + colorObj.name;
-}
+  if (!paletteEl) return;
 
-/* ---------------- gallery ---------------- */
-function buildGallery() {
-  galleryGrid.innerHTML = "";
-  PICTURES.forEach((pic, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "gallery-item";
-    btn.setAttribute("role", "option");
-    btn.innerHTML = '<span class="emoji">' + pic.emoji + '</span><span>' + pic.name + '</span>';
-    btn.addEventListener("click", () => loadPicture(idx, true));
-    galleryGrid.appendChild(btn);
-  });
-}
+  paletteEl.innerHTML = "";
 
-function refreshGalleryActive() {
-  [...galleryGrid.children].forEach((el, idx) => {
-    el.classList.toggle("active", idx === state.pictureIndex);
-  });
-}
+  PALETTE.forEach(color => {
 
-/* ---------------- loading a picture ---------------- */
-function loadPicture(index, resetColors) {
-  lastPictureIndex = state.pictureIndex;
-  state.pictureIndex = index;
-  if (resetColors) {
-    state.colors = {};
-    state.score = 0;
-  }
-  state.challengeTargets = {};
-  state.showingAfter = true;
-  renderSVG();
-  refreshGalleryActive();
-  if (state.challengeMode) generateChallengeTargets();
-  updateHUD();
-  saveToStorage();
-}
+    const button = document.createElement("button");
 
-function currentPicture() {
-  return PICTURES[state.pictureIndex];
-}
+    button.className = "color-btn";
+    button.type = "button";
+    button.title = color.name;
 
-/* ---------------- rendering ---------------- */
-const SVG_NS = "http://www.w3.org/2000/svg";
+    button.style.background = color.hex;
 
-function renderSVG() {
-  const pic = currentPicture();
-  svgEl.setAttribute("viewBox", pic.viewBox);
-  svgEl.innerHTML = "";
-  pic.regions.forEach((region) => {
-    const el = document.createElementNS(SVG_NS, region.tag);
-    Object.entries(region.attrs).forEach(([k, v]) => el.setAttribute(k, v));
-    el.classList.add("region");
-    el.setAttribute("data-region-id", region.id);
-    el.setAttribute("tabindex", "0");
-    el.setAttribute("role", "button");
-    el.setAttribute("aria-label", region.label);
-    const target = region.colorTarget === "stroke" ? "stroke" : "fill";
-    const savedColor = state.colors[region.id];
-    if (target === "fill") {
-      el.setAttribute("fill", savedColor || "#FFFFFF");
-    } else {
-      el.setAttribute("stroke", savedColor || "#FFFFFF");
-      el.setAttribute("stroke-linecap", "round");
+    if (color.name === "White") {
+      button.style.border = "2px solid #aaa";
     }
-    el.addEventListener("click", (e) => handleRegionClick(region, el, e));
-    el.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        handleRegionClick(region, el, e);
-      }
+
+    button.addEventListener("click", () => {
+
+      state.selectedColorName = color.name;
+      state.selectedColorHex = color.hex;
+
+      document.querySelectorAll(".color-btn").forEach(btn => {
+        btn.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      showToast("Selected " + color.name);
     });
-    svgEl.appendChild(el);
+
+    paletteEl.appendChild(button);
   });
 }
 
-function applyStoredColors() {
-  const pic = currentPicture();
-  pic.regions.forEach((region) => {
-    const el = svgEl.querySelector('[data-region-id="' + region.id + '"]');
-    if (!el) return;
-    const target = region.colorTarget === "stroke" ? "stroke" : "fill";
-    const color = state.colors[region.id];
-    if (color) el.setAttribute(target, color);
-  });
-}
 
-/* ---------------- interaction ---------------- */
-function handleRegionClick(region, el, evt) {
-  if (state.mode === "erase") {
-    eraseRegion(region, el);
-    return;
-  }
+// ============================================================
+// 9. BUILD GALLERY
+// ============================================================
 
-  if (!state.selectedColorHex) {
-    showToast("Pick a color first! 🎨");
-    return;
-  }
+function buildGallery() {
 
-  if (state.challengeMode) {
-    const target = state.challengeTargets[region.id];
-    if (target && target !== state.selectedColorName) {
-      showToast("Try another color!");
-      return;
+  if (!galleryEl) return;
+
+  galleryEl.innerHTML = "";
+
+  PICTURES.forEach((picture, index) => {
+
+    const card = document.createElement("button");
+
+    card.type = "button";
+    card.className = "gallery-item";
+
+    if (index === state.currentPicture) {
+      card.classList.add("active");
     }
+
+    card.innerHTML = `
+      <div style="font-size:38px">${picture.emoji}</div>
+      <div>${picture.title}</div>
+    `;
+
+    card.addEventListener("click", () => {
+
+      state.currentPicture = index;
+
+      resetCurrentPicture(false);
+
+      buildGallery();
+      renderPicture();
+      updateUI();
+
+      hideCompletion();
+    });
+
+    galleryEl.appendChild(card);
+  });
+}
+
+
+// ============================================================
+// 10. RENDER MAIN SVG
+// ============================================================
+
+function renderPicture() {
+
+  if (!svgEl) return;
+
+  const picture = getCurrentPicture();
+
+  svgEl.innerHTML = "";
+
+  svgEl.setAttribute("viewBox", "0 0 360 320");
+
+  picture.regions.forEach(region => {
+
+    const element =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        region.type
+      );
+
+    Object.entries(region.attrs).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
+
+    element.setAttribute("fill", "#ffffff");
+    element.setAttribute("stroke", "#222");
+    element.setAttribute("stroke-width", "3");
+
+    element.dataset.regionId = region.id;
+
+    element.style.cursor = "pointer";
+    element.style.transition = "0.15s";
+
+    element.addEventListener("click", handleRegionClick);
+
+    svgEl.appendChild(element);
+  });
+
+  applySavedColors();
+
+  buildReferencePanel();
+}
+
+
+// ============================================================
+// 11. REFERENCE PANEL
+// ============================================================
+
+function buildReferencePanel() {
+
+  const coloringPanel =
+    document.querySelector(".coloring-card") ||
+    document.querySelector(".canvas-card") ||
+    svgEl.parentElement;
+
+  if (!coloringPanel) return;
+
+  let referenceBox =
+    document.getElementById("reference-box");
+
+  if (!referenceBox) {
+
+    referenceBox = document.createElement("div");
+
+    referenceBox.id = "reference-box";
+
+    referenceBox.style.marginTop = "20px";
+    referenceBox.style.padding = "15px";
+    referenceBox.style.borderRadius = "15px";
+    referenceBox.style.background = "#f8fafc";
+    referenceBox.style.border = "2px solid #e5e7eb";
+    referenceBox.style.textAlign = "center";
+
+    svgEl.parentElement.appendChild(referenceBox);
   }
 
-  const wasEmpty = !state.colors[region.id];
-  colorRegion(region, el, state.selectedColorHex);
+  referenceBox.innerHTML = `
+    <h3 style="
+      margin:0 0 10px;
+      font-size:20px;
+      color:#111827;
+    ">
+      🎨 Reference Picture
+    </h3>
 
-  if (wasEmpty) {
-    addRegionScore();
-    spawnSparkle(evt);
-    delete state.challengeTargets[region.id];
-    if (state.challengeMode) advanceChallenge();
+    <div style="
+      font-size:14px;
+      color:#6b7280;
+      margin-bottom:10px;
+    ">
+      Use these colors to paint your picture
+    </div>
+
+    <div id="reference-svg-container"></div>
+  `;
+
+  renderReferenceSVG();
+}
+
+
+// ============================================================
+// 12. REFERENCE SVG
+// ============================================================
+
+function renderReferenceSVG() {
+
+  const container =
+    document.getElementById("reference-svg-container");
+
+  if (!container) return;
+
+  const picture = getCurrentPicture();
+
+  const referenceSVG =
+    document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+
+  referenceSVG.setAttribute("viewBox", "0 0 360 320");
+  referenceSVG.setAttribute("width", "100%");
+  referenceSVG.setAttribute("height", "250");
+
+  picture.regions.forEach(region => {
+
+    const element =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        region.type
+      );
+
+    Object.entries(region.attrs).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
+
+    const correctColor =
+      REFERENCE_COLORS[picture.id][region.id];
+
+    const color =
+      PALETTE.find(c => c.name === correctColor);
+
+    element.setAttribute(
+      "fill",
+      color ? color.hex : "#ffffff"
+    );
+
+    element.setAttribute("stroke", "#222");
+    element.setAttribute("stroke-width", "3");
+
+    referenceSVG.appendChild(element);
+  });
+
+  container.appendChild(referenceSVG);
+}
+
+
+// ============================================================
+// 13. REGION CLICK
+// ============================================================
+
+function handleRegionClick(event) {
+
+  const regionId =
+    event.currentTarget.dataset.regionId;
+
+  const picture = getCurrentPicture();
+
+  const region =
+    picture.regions.find(
+      r => r.id === regionId
+    );
+
+  if (!region) return;
+
+
+  // ----------------------------------------------------------
+  // ERASER
+  // ----------------------------------------------------------
+
+  if (state.eraserMode) {
+
+    event.currentTarget.setAttribute(
+      "fill",
+      "#ffffff"
+    );
+
+    delete state.colored[regionId];
+    delete state.correctRegions[regionId];
+
+    calculateScore();
+    saveState();
+    updateUI();
+
+    return;
   }
 
-  updateHUD();
-  saveToStorage();
+
+  // ----------------------------------------------------------
+  // NO COLOR SELECTED
+  // ----------------------------------------------------------
+
+  if (!state.selectedColorName) {
+
+    showToast("🎨 Please select a color first!");
+
+    return;
+  }
+
+
+  // ----------------------------------------------------------
+  // APPLY COLOR
+  // ----------------------------------------------------------
+
+  event.currentTarget.setAttribute(
+    "fill",
+    state.selectedColorHex
+  );
+
+  state.colored[regionId] =
+    state.selectedColorName;
+
+
+  // ----------------------------------------------------------
+  // CHECK CORRECT COLOR
+  // ----------------------------------------------------------
+
+  const correctColor =
+    REFERENCE_COLORS[picture.id][regionId];
+
+  const isCorrect =
+    state.selectedColorName === correctColor;
+
+  state.correctRegions[regionId] =
+    isCorrect;
+
+
+  // ----------------------------------------------------------
+  // MESSAGE
+  // ----------------------------------------------------------
+
+  if (isCorrect) {
+
+    showToast("✅ Correct color! +points");
+
+    event.currentTarget.style.filter =
+      "brightness(1.08)";
+
+  } else {
+
+    showToast(
+      "❌ Wrong color. Check the reference picture."
+    );
+
+    event.currentTarget.style.filter =
+      "brightness(0.95)";
+  }
+
+
+  // ----------------------------------------------------------
+  // SCORE
+  // ----------------------------------------------------------
+
+  calculateScore();
+
+  saveState();
+
+  updateUI();
+
   checkCompletion();
 }
 
-function colorRegion(region, el, hex) {
-  const targetAttr = region.colorTarget === "stroke" ? "stroke" : "fill";
-  el.setAttribute(targetAttr, hex);
-  state.colors[region.id] = hex;
-}
 
-function eraseRegion(region, el) {
-  const targetAttr = region.colorTarget === "stroke" ? "stroke" : "fill";
-  const wasColored = !!state.colors[region.id];
-  el.setAttribute(targetAttr, "#FFFFFF");
-  delete state.colors[region.id];
-  if (wasColored) showToast("Erased!");
-  updateHUD();
-  saveToStorage();
-}
+// ============================================================
+// 14. SCORE CALCULATION
+// ============================================================
 
-/* ---------------- modes ---------------- */
-function refreshModeButtons() {
-  paintBtn.classList.toggle("active", state.mode === "paint");
-  paintBtn.setAttribute("aria-pressed", state.mode === "paint");
-  eraserBtn.classList.toggle("active", state.mode === "erase");
-  eraserBtn.setAttribute("aria-pressed", state.mode === "erase");
-  challengeBtn.classList.toggle("active", state.challengeMode);
-  challengeBtn.setAttribute("aria-pressed", state.challengeMode);
-}
+function calculateScore() {
 
-function attachControlEvents() {
-  paintBtn.addEventListener("click", () => {
-    state.mode = "paint";
-    refreshModeButtons();
-  });
+  const picture = getCurrentPicture();
 
-  eraserBtn.addEventListener("click", () => {
-    state.mode = "erase";
-    refreshModeButtons();
-    showToast("Eraser Selected");
-  });
+  const total =
+    picture.regions.length;
 
-  challengeBtn.addEventListener("click", () => {
-    state.challengeMode = !state.challengeMode;
-    refreshModeButtons();
-    if (state.challengeMode) {
-      generateChallengeTargets();
-      challengeBanner.hidden = false;
-    } else {
-      challengeBanner.hidden = true;
+  let correct = 0;
+
+  picture.regions.forEach(region => {
+
+    if (state.correctRegions[region.id]) {
+      correct++;
     }
   });
 
-  resetBtn.addEventListener("click", () => {
-    resetPicture();
-  });
+  state.score =
+    total === 0
+      ? 0
+      : Math.round((correct / total) * 100);
+}
 
-  newPictureBtn.addEventListener("click", () => {
-    let idx;
-    do {
-      idx = Math.floor(Math.random() * PICTURES.length);
-    } while (idx === state.pictureIndex && PICTURES.length > 1);
-    loadPicture(idx, true);
-    showToast("New Picture!");
-  });
 
-  clearProgressBtn.addEventListener("click", () => {
-    localStorage.removeItem(SAVE_KEY);
-    state.score = 0;
-    state.colors = {};
-    renderSVG();
-    updateHUD();
-    showToast("Progress cleared");
-  });
+// ============================================================
+// 15. APPLY SAVED COLORS
+// ============================================================
 
-  beforeAfterBtn.addEventListener("click", () => {
-    state.showingAfter = !state.showingAfter;
-    if (state.showingAfter) {
-      applyStoredColors();
-    } else {
-      [...svgEl.querySelectorAll(".region")].forEach((el) => {
-        const region = currentPicture().regions.find((r) => r.id === el.getAttribute("data-region-id"));
-        const targetAttr = region.colorTarget === "stroke" ? "stroke" : "fill";
-        el.setAttribute(targetAttr, "#FFFFFF");
-      });
+function applySavedColors() {
+
+  if (!svgEl) return;
+
+  const picture = getCurrentPicture();
+
+  picture.regions.forEach(region => {
+
+    const savedColor =
+      state.colored[region.id];
+
+    if (!savedColor) return;
+
+    const color =
+      PALETTE.find(
+        c => c.name === savedColor
+      );
+
+    if (!color) return;
+
+    const element =
+      svgEl.querySelector(
+        `[data-region-id="${region.id}"]`
+      );
+
+    if (element) {
+      element.setAttribute(
+        "fill",
+        color.hex
+      );
     }
   });
-
-  nextPictureBtn.addEventListener("click", () => {
-    completionOverlay.hidden = true;
-    confettiLayer.innerHTML = "";
-    let idx = (state.pictureIndex + 1) % PICTURES.length;
-    loadPicture(idx, true);
-  });
 }
 
-/* ---------------- challenge mode ---------------- */
-function generateChallengeTargets() {
-  const pic = currentPicture();
-  state.challengeTargets = {};
-  pic.regions.forEach((region) => {
-    if (!state.colors[region.id]) {
-      const color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
-      state.challengeTargets[region.id] = color.name;
-    }
-  });
-  showNextChallengeInstruction();
-}
 
-function advanceChallenge() {
-  if (Object.keys(state.challengeTargets).length === 0) {
-    challengeBanner.hidden = true;
-    return;
+// ============================================================
+// 16. UPDATE UI
+// ============================================================
+
+function updateUI() {
+
+  const picture = getCurrentPicture();
+
+  const total =
+    picture.regions.length;
+
+  const colored =
+    Object.keys(state.colored).length;
+
+  const progress =
+    total === 0
+      ? 0
+      : Math.round((colored / total) * 100);
+
+
+  if (levelEl) {
+    levelEl.textContent =
+      `Level ${state.currentPicture + 1}`;
   }
-  showNextChallengeInstruction();
-}
 
-function showNextChallengeInstruction() {
-  const pic = currentPicture();
-  const remainingId = Object.keys(state.challengeTargets)[0];
-  if (!remainingId) {
-    challengeBanner.hidden = true;
-    return;
+  if (progressEl) {
+    progressEl.textContent =
+      `${progress}%`;
   }
-  const region = pic.regions.find((r) => r.id === remainingId);
-  const colorName = state.challengeTargets[remainingId];
-  challengeText.textContent = "Color the " + region.label + " " + colorName.toUpperCase() + ".";
-  challengeBanner.hidden = false;
-}
 
-/* ---------------- scoring & progress ---------------- */
-function totalRegions() {
-  return currentPicture().regions.length;
-}
+  if (areasEl) {
+    areasEl.textContent =
+      `${colored}/${total}`;
+  }
 
-function coloredRegions() {
-  return Object.keys(state.colors).length;
-}
-
-function perRegionPoints() {
-  return Math.floor(80 / totalRegions());
-}
-
-function addRegionScore() {
-  state.score += perRegionPoints();
-}
-
-function updateHUD() {
-  const total = totalRegions();
-  const colored = coloredRegions();
-  const pct = total === 0 ? 0 : Math.round((colored / total) * 100);
-
-  levelValue.textContent = state.pictureIndex + 1;
-  progressFill.style.width = pct + "%";
-  progressValue.textContent = pct + "%";
-  coloredCountEl.textContent = colored;
-  totalCountEl.textContent = total;
-  scoreValue.textContent = state.score;
-
-  if (!state.selectedColorHex) {
-    selectedColorLabel.textContent = "Selected Color: none yet — pick one below!";
-  } else {
-    selectedColorLabel.textContent = "Selected Color: " + state.selectedColorName;
+  if (scoreEl) {
+    scoreEl.textContent =
+      state.score;
   }
 }
+
+
+// ============================================================
+// 17. COMPLETION
+// ============================================================
 
 function checkCompletion() {
-  if (coloredRegions() === totalRegions()) {
-    const bonus = 100 - perRegionPoints() * totalRegions();
-    state.score += bonus;
-    updateHUD();
-    saveToStorage();
-    setTimeout(showCompletion, prefersReducedMotion ? 0 : 300);
+
+  const picture = getCurrentPicture();
+
+  const total =
+    picture.regions.length;
+
+  const colored =
+    Object.keys(state.colored).length;
+
+
+  if (colored !== total) {
+    return;
   }
+
+  showCompletion();
 }
+
 
 function showCompletion() {
-  finalScoreEl.textContent = Math.min(state.score, 100);
+
+  if (!completionOverlay) return;
+
   completionOverlay.hidden = false;
-  if (!prefersReducedMotion) spawnConfetti();
+  completionOverlay.style.display = "flex";
+
+  const scoreText =
+    completionOverlay.querySelector(
+      "#final-score"
+    ) ||
+    completionOverlay.querySelector(
+      ".final-score"
+    ) ||
+    completionOverlay.querySelector(
+      "[data-final-score]"
+    );
+
+  if (scoreText) {
+    scoreText.textContent =
+      `${state.score}/100`;
+  }
+
+  const overlayText =
+    completionOverlay.querySelector(
+      ".completion-score"
+    );
+
+  if (overlayText) {
+    overlayText.textContent =
+      `COLORING SCORE: ${state.score}/100`;
+  }
 }
 
-/* ---------------- reset ---------------- */
-function resetPicture() {
-  state.colors = {};
+
+function hideCompletion() {
+
+  if (!completionOverlay) return;
+
+  completionOverlay.hidden = true;
+  completionOverlay.style.display = "none";
+}
+
+
+// ============================================================
+// 18. RESET CURRENT PICTURE
+// ============================================================
+
+function resetCurrentPicture(showMessage = true) {
+
+  state.colored = {};
+  state.correctRegions = {};
   state.score = 0;
+
   state.challengeTargets = {};
-  renderSVG();
-  if (state.challengeMode) generateChallengeTargets();
-  updateHUD();
-  saveToStorage();
-  showToast("Picture reset");
-}
 
-/* ---------------- persistence ---------------- */
-function saveToStorage() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      pictureIndex: state.pictureIndex,
-      colors: state.colors,
-      score: state.score
-    }));
-  } catch (e) {
-    /* storage unavailable — game still works, just without persistence */
+  hideCompletion();
+
+  saveState();
+
+  if (svgEl) {
+    renderPicture();
+  }
+
+  updateUI();
+
+  if (showMessage) {
+    showToast("↻ Picture reset!");
   }
 }
 
-function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch (e) {
-    return null;
-  }
+
+// ============================================================
+// 19. RESET BUTTON
+// ============================================================
+
+if (resetBtn) {
+
+  resetBtn.addEventListener(
+    "click",
+    () => {
+      resetCurrentPicture(true);
+    }
+  );
 }
 
-/* ---------------- effects ---------------- */
-function spawnSparkle(evt) {
-  if (prefersReducedMotion) return;
-  const rect = svgEl.getBoundingClientRect();
-  const wrapRect = sparkleLayer.getBoundingClientRect();
-  let x = wrapRect.width / 2;
-  let y = wrapRect.height / 2;
-  if (evt && evt.clientX) {
-    x = evt.clientX - wrapRect.left;
-    y = evt.clientY - wrapRect.top;
-  }
-  const emojiSet = ["✨", "⭐", "💫"];
-  for (let i = 0; i < 3; i++) {
-    const s = document.createElement("span");
-    s.className = "sparkle";
-    s.textContent = emojiSet[Math.floor(Math.random() * emojiSet.length)];
-    s.style.left = (x + (Math.random() * 30 - 15)) + "px";
-    s.style.top = (y + (Math.random() * 30 - 15)) + "px";
-    sparkleLayer.appendChild(s);
-    setTimeout(() => s.remove(), 700);
-  }
+
+// ============================================================
+// 20. NEW PICTURE
+// ============================================================
+
+if (newPictureBtn) {
+
+  newPictureBtn.addEventListener(
+    "click",
+    () => {
+
+      state.currentPicture++;
+
+      if (
+        state.currentPicture >=
+        PICTURES.length
+      ) {
+        state.currentPicture = 0;
+      }
+
+      state.colored = {};
+      state.correctRegions = {};
+      state.score = 0;
+
+      hideCompletion();
+
+      saveState();
+
+      buildGallery();
+      renderPicture();
+      updateUI();
+
+      showToast(
+        `🎲 ${getCurrentPicture().title}`
+      );
+    }
+  );
 }
 
-function spawnConfetti() {
-  const colors = ["#FF6FA5", "#FFD93D", "#4FC3F7", "#6BCB77", "#9775FA", "#FFA94D"];
-  for (let i = 0; i < 60; i++) {
-    const piece = document.createElement("span");
-    piece.className = "confetti-piece";
-    piece.style.left = Math.random() * 100 + "%";
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.animationDuration = (2 + Math.random() * 1.5) + "s";
-    piece.style.animationDelay = (Math.random() * 0.4) + "s";
-    confettiLayer.appendChild(piece);
-    setTimeout(() => piece.remove(), 4000);
-  }
+
+// ============================================================
+// 21. NEXT PICTURE
+// ============================================================
+
+if (nextPictureBtn) {
+
+  nextPictureBtn.addEventListener(
+    "click",
+    () => {
+
+      state.currentPicture++;
+
+      if (
+        state.currentPicture >=
+        PICTURES.length
+      ) {
+        state.currentPicture = 0;
+      }
+
+      state.colored = {};
+      state.correctRegions = {};
+      state.score = 0;
+
+      hideCompletion();
+
+      saveState();
+
+      buildGallery();
+      renderPicture();
+      updateUI();
+
+      showToast(
+        `➡️ ${getCurrentPicture().title}`
+      );
+    }
+  );
 }
 
-let toastTimer = null;
+
+// ============================================================
+// 22. PAINT MODE
+// ============================================================
+
+if (paintBtn) {
+
+  paintBtn.addEventListener(
+    "click",
+    () => {
+
+      state.eraserMode = false;
+
+      paintBtn.classList.add("active");
+
+      if (eraserBtn) {
+        eraserBtn.classList.remove("active");
+      }
+
+      showToast("🎨 Paint mode");
+    }
+  );
+}
+
+
+// ============================================================
+// 23. ERASER MODE
+// ============================================================
+
+if (eraserBtn) {
+
+  eraserBtn.addEventListener(
+    "click",
+    () => {
+
+      state.eraserMode = true;
+
+      eraserBtn.classList.add("active");
+
+      if (paintBtn) {
+        paintBtn.classList.remove("active");
+      }
+
+      showToast("🧹 Eraser mode");
+    }
+  );
+}
+
+
+// ============================================================
+// 24. CHALLENGE MODE
+// ============================================================
+
+if (challengeBtn) {
+
+  challengeBtn.addEventListener(
+    "click",
+    () => {
+
+      state.challengeMode =
+        !state.challengeMode;
+
+      if (state.challengeMode) {
+
+        challengeBtn.classList.add("active");
+
+        showToast(
+          "🌈 Color Challenge ON"
+        );
+
+      } else {
+
+        challengeBtn.classList.remove("active");
+
+        showToast(
+          "🌈 Color Challenge OFF"
+        );
+      }
+
+      saveState();
+    }
+  );
+}
+
+
+// ============================================================
+// 25. CLEAR PROGRESS
+// ============================================================
+
+if (clearProgressBtn) {
+
+  clearProgressBtn.addEventListener(
+    "click",
+    () => {
+
+      const confirmed =
+        confirm(
+          "Clear all saved painting progress?"
+        );
+
+      if (!confirmed) return;
+
+      localStorage.removeItem(
+        SAVE_KEY
+      );
+
+      state = {
+        currentPicture: 0,
+        selectedColorName: null,
+        selectedColorHex: null,
+        colored: {},
+        correctRegions: {},
+        score: 0,
+        challengeMode: false,
+        challengeTargets: {},
+        eraserMode: false
+      };
+
+      hideCompletion();
+
+      buildGallery();
+      renderPicture();
+      updateUI();
+
+      showToast(
+        "🗑 Progress cleared!"
+      );
+    }
+  );
+}
+
+
+// ============================================================
+// 26. TOAST MESSAGE
+// ============================================================
+
 function showToast(message) {
+
+  if (!toastEl) return;
+
   toastEl.textContent = message;
+
   toastEl.hidden = false;
-  toastEl.style.animation = "none";
-  void toastEl.offsetWidth;
-  toastEl.style.animation = "";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toastEl.hidden = true; }, 2200);
+  toastEl.style.display = "block";
+
+  clearTimeout(
+    showToast.timer
+  );
+
+  showToast.timer =
+    setTimeout(() => {
+
+      toastEl.hidden = true;
+      toastEl.style.display = "none";
+
+    }, 1800);
 }
 
-/* ---------------- go! ---------------- */
-document.addEventListener("DOMContentLoaded", init);
+
+// ============================================================
+// 27. SAVE GAME
+// ============================================================
+
+function saveState() {
+
+  try {
+
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify({
+        currentPicture:
+          state.currentPicture,
+
+        colored:
+          state.colored,
+
+        correctRegions:
+          state.correctRegions,
+
+        score:
+          state.score,
+
+        challengeMode:
+          state.challengeMode
+      })
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Could not save game:",
+      error
+    );
+  }
+}
+
+
+// ============================================================
+// 28. LOAD GAME
+// ============================================================
+
+function loadState() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        SAVE_KEY
+      );
+
+    if (!saved) {
+
+      state.colored = {};
+      state.correctRegions = {};
+      state.score = 0;
+      state.currentPicture = 0;
+      state.challengeMode = false;
+      state.eraserMode = false;
+
+      return;
+    }
+
+    const data =
+      JSON.parse(saved);
+
+    state.currentPicture =
+      Number.isInteger(
+        data.currentPicture
+      )
+        ? data.currentPicture
+        : 0;
+
+    state.colored =
+      data.colored || {};
+
+    state.correctRegions =
+      data.correctRegions || {};
+
+    state.score =
+      Number.isFinite(data.score)
+        ? data.score
+        : 0;
+
+    state.challengeMode =
+      !!data.challengeMode;
+
+    state.eraserMode = false;
+
+  } catch (error) {
+
+    console.warn(
+      "Could not load saved game:",
+      error
+    );
+
+    state = {
+      currentPicture: 0,
+      selectedColorName: null,
+      selectedColorHex: null,
+      colored: {},
+      correctRegions: {},
+      score: 0,
+      challengeMode: false,
+      challengeTargets: {},
+      eraserMode: false
+    };
+  }
+}
+
+
+// ============================================================
+// 29. PREVENT COMPLETION POPUP ON PAGE LOAD
+// ============================================================
+
+window.addEventListener(
+  "load",
+  () => {
+
+    setTimeout(() => {
+
+      if (
+        Object.keys(
+          state.colored || {}
+        ).length === 0
+      ) {
+        hideCompletion();
+      }
+
+    }, 100);
+  }
+);
