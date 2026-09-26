@@ -410,27 +410,6 @@ button {
     display: none !important;
 }
 
-
-/* TOAST */
-.toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(0);
-    background: var(--ink);
-    color: #fff;
-    padding: 12px 22px;
-    border-radius: 999px;
-    font-weight: 700;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-    z-index: 60;
-    animation: toast-in-out 2.2s ease forwards;
-}
-
-.toast[hidden] {
-    display: none !important;
-}
-
 .completion-card {
   background: #fff;
   border-radius: var(--radius-lg);
@@ -485,18 +464,22 @@ button {
 
 /* TOAST */
 .toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  background: var(--ink);
-  color: #fff;
-  padding: 12px 22px;
-  border-radius: 999px;
-  font-weight: 700;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-  z-index: 60;
-  animation: toast-in-out 2.2s ease forwards;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    z-index: 60;
+    animation: toast-in-out 2.2s ease forwards;
+}
+
+.toast[hidden] {
+    display: none !important;
 }
 
 @keyframes toast-in-out {
