@@ -1,9 +1,39 @@
 /* =========================================================
-   COLOR & PAINT
+   COLOR & PAINT - FINAL VERSION
    Reference Picture + Correct Color Scoring
    ========================================================= */
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+const SAVE_KEY = "colorAndPaintFinal_v1";
+
+/* =========================================================
+   COLOR PALETTE
+   ========================================================= */
+
+const PALETTE = [
+  { name: "Red", hex: "#FF6B6B" },
+  { name: "Pink", hex: "#FF8FB1" },
+  { name: "Orange", hex: "#FFA94D" },
+  { name: "Yellow", hex: "#FFD93D" },
+  { name: "Green", hex: "#6BCB77" },
+  { name: "Light Green", hex: "#B2F2BB" },
+  { name: "Blue", hex: "#4FC3F7" },
+  { name: "Sky Blue", hex: "#A5D8FF" },
+  { name: "Purple", hex: "#9775FA" },
+  { name: "Violet", hex: "#DA77F2" },
+  { name: "Brown", hex: "#A97455" },
+  { name: "Black", hex: "#2B2B2B" },
+  { name: "White", hex: "#FFFFFF" },
+  { name: "Gray", hex: "#ADB5BD" }
+];
+
+
+/* =========================================================
+   PICTURES
+   ========================================================= */
+
 const PICTURES = [
+
   {
     id: "flower",
     name: "Flower",
@@ -11,34 +41,113 @@ const PICTURES = [
     viewBox: "0 0 400 400",
 
     regions: [
-      { id: "stem", label: "stem", tag: "rect",
-        attrs: { x: 190, y: 220, width: 20, height: 150, rx: 6 } },
+      {
+        id: "stem",
+        label: "stem",
+        tag: "rect",
+        attrs: {
+          x: 190,
+          y: 220,
+          width: 20,
+          height: 150,
+          rx: 6
+        }
+      },
 
-      { id: "leaf1", label: "left leaf", tag: "ellipse",
-        attrs: { cx: 160, cy: 292, rx: 36, ry: 16, transform: "rotate(-30 160 292)" } },
+      {
+        id: "leaf1",
+        label: "left leaf",
+        tag: "ellipse",
+        attrs: {
+          cx: 160,
+          cy: 292,
+          rx: 36,
+          ry: 16,
+          transform: "rotate(-30 160 292)"
+        }
+      },
 
-      { id: "leaf2", label: "right leaf", tag: "ellipse",
-        attrs: { cx: 240, cy: 292, rx: 36, ry: 16, transform: "rotate(30 240 292)" } },
+      {
+        id: "leaf2",
+        label: "right leaf",
+        tag: "ellipse",
+        attrs: {
+          cx: 240,
+          cy: 292,
+          rx: 36,
+          ry: 16,
+          transform: "rotate(30 240 292)"
+        }
+      },
 
-      { id: "petal1", label: "top petal", tag: "circle",
-        attrs: { cx: 200, cy: 80, r: 38 } },
+      {
+        id: "petal1",
+        label: "top petal",
+        tag: "circle",
+        attrs: {
+          cx: 200,
+          cy: 80,
+          r: 38
+        }
+      },
 
-      { id: "petal2", label: "upper right petal", tag: "circle",
-        attrs: { cx: 266, cy: 128, r: 38 } },
+      {
+        id: "petal2",
+        label: "upper right petal",
+        tag: "circle",
+        attrs: {
+          cx: 266,
+          cy: 128,
+          r: 38
+        }
+      },
 
-      { id: "petal3", label: "lower right petal", tag: "circle",
-        attrs: { cx: 241, cy: 207, r: 38 } },
+      {
+        id: "petal3",
+        label: "lower right petal",
+        tag: "circle",
+        attrs: {
+          cx: 241,
+          cy: 207,
+          r: 38
+        }
+      },
 
-      { id: "petal4", label: "lower left petal", tag: "circle",
-        attrs: { cx: 159, cy: 207, r: 38 } },
+      {
+        id: "petal4",
+        label: "lower left petal",
+        tag: "circle",
+        attrs: {
+          cx: 159,
+          cy: 207,
+          r: 38
+        }
+      },
 
-      { id: "petal5", label: "upper left petal", tag: "circle",
-        attrs: { cx: 134, cy: 128, r: 38 } },
+      {
+        id: "petal5",
+        label: "upper left petal",
+        tag: "circle",
+        attrs: {
+          cx: 134,
+          cy: 128,
+          r: 38
+        }
+      },
 
-      { id: "center", label: "flower center", tag: "circle",
-        attrs: { cx: 200, cy: 150, r: 34 } }
+      {
+        id: "center",
+        label: "flower center",
+        tag: "circle",
+        attrs: {
+          cx: 200,
+          cy: 150,
+          r: 34
+        }
+      }
     ]
   },
+
 
   {
     id: "butterfly",
@@ -47,28 +156,86 @@ const PICTURES = [
     viewBox: "0 0 400 400",
 
     regions: [
-      { id: "wing-tl", label: "top left wing", tag: "ellipse",
-        attrs: { cx: 138, cy: 148, rx: 72, ry: 58 } },
+      {
+        id: "wing-tl",
+        label: "top left wing",
+        tag: "ellipse",
+        attrs: {
+          cx: 138,
+          cy: 148,
+          rx: 72,
+          ry: 58
+        }
+      },
 
-      { id: "wing-tr", label: "top right wing", tag: "ellipse",
-        attrs: { cx: 262, cy: 148, rx: 72, ry: 58 } },
+      {
+        id: "wing-tr",
+        label: "top right wing",
+        tag: "ellipse",
+        attrs: {
+          cx: 262,
+          cy: 148,
+          rx: 72,
+          ry: 58
+        }
+      },
 
-      { id: "wing-bl", label: "bottom left wing", tag: "ellipse",
-        attrs: { cx: 152, cy: 252, rx: 55, ry: 46 } },
+      {
+        id: "wing-bl",
+        label: "bottom left wing",
+        tag: "ellipse",
+        attrs: {
+          cx: 152,
+          cy: 252,
+          rx: 55,
+          ry: 46
+        }
+      },
 
-      { id: "wing-br", label: "bottom right wing", tag: "ellipse",
-        attrs: { cx: 248, cy: 252, rx: 55, ry: 46 } },
+      {
+        id: "wing-br",
+        label: "bottom right wing",
+        tag: "ellipse",
+        attrs: {
+          cx: 248,
+          cy: 252,
+          rx: 55,
+          ry: 46
+        }
+      },
 
-      { id: "antenna-l", label: "left antenna", tag: "path",
-        attrs: { d: "M195,110 L172,64 L182,60 L200,104 Z" } },
+      {
+        id: "antenna-l",
+        label: "left antenna",
+        tag: "path",
+        attrs: {
+          d: "M195,110 L172,64 L182,60 L200,104 Z"
+        }
+      },
 
-      { id: "antenna-r", label: "right antenna", tag: "path",
-        attrs: { d: "M205,110 L228,64 L218,60 L200,104 Z" } },
+      {
+        id: "antenna-r",
+        label: "right antenna",
+        tag: "path",
+        attrs: {
+          d: "M205,110 L228,64 L218,60 L200,104 Z"
+        }
+      },
 
-      { id: "body", label: "body", tag: "ellipse",
-        attrs: { cx: 200, cy: 200, rx: 14, ry: 92 } }
+      {
+        id: "body",
+        label: "body",
+        tag: "ellipse",
+        attrs: {
+          cx: 200,
+          cy: 200,
+          rx: 14,
+          ry: 92
+        }
+      }
     ]
   },
+
 
   {
     id: "rainbow",
@@ -125,16 +292,43 @@ const PICTURES = [
         colorTarget: "stroke"
       },
 
-      { id: "cloud1", label: "left cloud", tag: "ellipse",
-        attrs: { cx: 65, cy: 95, rx: 52, ry: 27 } },
+      {
+        id: "cloud1",
+        label: "left cloud",
+        tag: "ellipse",
+        attrs: {
+          cx: 65,
+          cy: 95,
+          rx: 52,
+          ry: 27
+        }
+      },
 
-      { id: "cloud2", label: "right cloud", tag: "ellipse",
-        attrs: { cx: 60, cy: 230, rx: 46, ry: 22 } },
+      {
+        id: "cloud2",
+        label: "right cloud",
+        tag: "ellipse",
+        attrs: {
+          cx: 60,
+          cy: 230,
+          rx: 46,
+          ry: 22
+        }
+      },
 
-      { id: "sun", label: "sun", tag: "circle",
-        attrs: { cx: 335, cy: 75, r: 36 } }
+      {
+        id: "sun",
+        label: "sun",
+        tag: "circle",
+        attrs: {
+          cx: 335,
+          cy: 75,
+          r: 36
+        }
+      }
     ]
   },
+
 
   {
     id: "house",
@@ -143,31 +337,103 @@ const PICTURES = [
     viewBox: "0 0 400 400",
 
     regions: [
-      { id: "roof", label: "roof", tag: "polygon",
-        attrs: { points: "70,180 200,80 330,180" } },
+      {
+        id: "roof",
+        label: "roof",
+        tag: "polygon",
+        attrs: {
+          points: "70,180 200,80 330,180"
+        }
+      },
 
-      { id: "wall", label: "walls", tag: "rect",
-        attrs: { x: 90, y: 180, width: 220, height: 160 } },
+      {
+        id: "wall",
+        label: "walls",
+        tag: "rect",
+        attrs: {
+          x: 90,
+          y: 180,
+          width: 220,
+          height: 160
+        }
+      },
 
-      { id: "door", label: "door", tag: "rect",
-        attrs: { x: 180, y: 258, width: 50, height: 82, rx: 4 } },
+      {
+        id: "door",
+        label: "door",
+        tag: "rect",
+        attrs: {
+          x: 180,
+          y: 258,
+          width: 50,
+          height: 82,
+          rx: 4
+        }
+      },
 
-      { id: "window-l", label: "left window", tag: "rect",
-        attrs: { x: 112, y: 202, width: 48, height: 48, rx: 4 } },
+      {
+        id: "window-l",
+        label: "left window",
+        tag: "rect",
+        attrs: {
+          x: 112,
+          y: 202,
+          width: 48,
+          height: 48,
+          rx: 4
+        }
+      },
 
-      { id: "window-r", label: "right window", tag: "rect",
-        attrs: { x: 240, y: 202, width: 48, height: 48, rx: 4 } },
+      {
+        id: "window-r",
+        label: "right window",
+        tag: "rect",
+        attrs: {
+          x: 240,
+          y: 202,
+          width: 48,
+          height: 48,
+          rx: 4
+        }
+      },
 
-      { id: "tree-crown", label: "tree", tag: "circle",
-        attrs: { cx: 352, cy: 250, r: 38 } },
+      {
+        id: "tree-crown",
+        label: "tree",
+        tag: "circle",
+        attrs: {
+          cx: 352,
+          cy: 250,
+          r: 38
+        }
+      },
 
-      { id: "tree-trunk", label: "tree trunk", tag: "rect",
-        attrs: { x: 342, y: 288, width: 20, height: 48 } },
+      {
+        id: "tree-trunk",
+        label: "tree trunk",
+        tag: "rect",
+        attrs: {
+          x: 342,
+          y: 288,
+          width: 20,
+          height: 48
+        }
+      },
 
-      { id: "grass", label: "grass", tag: "rect",
-        attrs: { x: 0, y: 340, width: 400, height: 60 } }
+      {
+        id: "grass",
+        label: "grass",
+        tag: "rect",
+        attrs: {
+          x: 0,
+          y: 340,
+          width: 400,
+          height: 60
+        }
+      }
     ]
   },
+
 
   {
     id: "fish",
@@ -176,31 +442,91 @@ const PICTURES = [
     viewBox: "0 0 400 300",
 
     regions: [
-      { id: "tail", label: "tail", tag: "polygon",
-        attrs: { points: "292,150 362,100 362,200" } },
+      {
+        id: "tail",
+        label: "tail",
+        tag: "polygon",
+        attrs: {
+          points: "292,150 362,100 362,200"
+        }
+      },
 
-      { id: "fin-top", label: "top fin", tag: "polygon",
-        attrs: { points: "150,90 190,40 220,92" } },
+      {
+        id: "fin-top",
+        label: "top fin",
+        tag: "polygon",
+        attrs: {
+          points: "150,90 190,40 220,92"
+        }
+      },
 
-      { id: "fin-bottom", label: "bottom fin", tag: "polygon",
-        attrs: { points: "150,210 190,262 220,208" } },
+      {
+        id: "fin-bottom",
+        label: "bottom fin",
+        tag: "polygon",
+        attrs: {
+          points: "150,210 190,262 220,208"
+        }
+      },
 
-      { id: "body", label: "body", tag: "ellipse",
-        attrs: { cx: 180, cy: 150, rx: 112, ry: 70 } },
+      {
+        id: "body",
+        label: "body",
+        tag: "ellipse",
+        attrs: {
+          cx: 180,
+          cy: 150,
+          rx: 112,
+          ry: 70
+        }
+      },
 
-      { id: "eye", label: "eye", tag: "circle",
-        attrs: { cx: 118, cy: 128, r: 13 } },
+      {
+        id: "eye",
+        label: "eye",
+        tag: "circle",
+        attrs: {
+          cx: 118,
+          cy: 128,
+          r: 13
+        }
+      },
 
-      { id: "bubble1", label: "big bubble", tag: "circle",
-        attrs: { cx: 340, cy: 58, r: 11 } },
+      {
+        id: "bubble1",
+        label: "big bubble",
+        tag: "circle",
+        attrs: {
+          cx: 340,
+          cy: 58,
+          r: 11
+        }
+      },
 
-      { id: "bubble2", label: "medium bubble", tag: "circle",
-        attrs: { cx: 366, cy: 90, r: 7 } },
+      {
+        id: "bubble2",
+        label: "medium bubble",
+        tag: "circle",
+        attrs: {
+          cx: 366,
+          cy: 90,
+          r: 7
+        }
+      },
 
-      { id: "bubble3", label: "small bubble", tag: "circle",
-        attrs: { cx: 318, cy: 38, r: 6 } }
+      {
+        id: "bubble3",
+        label: "small bubble",
+        tag: "circle",
+        attrs: {
+          cx: 318,
+          cy: 38,
+          r: 6
+        }
+      }
     ]
   },
+
 
   {
     id: "apple",
@@ -211,7 +537,7 @@ const PICTURES = [
     regions: [
       {
         id: "apple-left",
-        label: "left side of the apple",
+        label: "left side of apple",
         tag: "path",
         attrs: {
           d: "M150,90 C95,55 35,95 40,155 C45,215 95,255 150,255 L150,90 Z"
@@ -220,7 +546,7 @@ const PICTURES = [
 
       {
         id: "apple-right",
-        label: "right side of the apple",
+        label: "right side of apple",
         tag: "path",
         attrs: {
           d: "M150,90 C205,55 265,95 260,155 C255,215 205,255 150,255 L150,90 Z"
@@ -240,7 +566,13 @@ const PICTURES = [
         id: "stem",
         label: "stem",
         tag: "rect",
-        attrs: { x: 144, y: 36, width: 12, height: 34, rx: 4 }
+        attrs: {
+          x: 144,
+          y: 36,
+          width: 12,
+          height: 34,
+          rx: 4
+        }
       },
 
       {
@@ -261,28 +593,6 @@ const PICTURES = [
 
 
 /* =========================================================
-   COLOR PALETTE
-   ========================================================= */
-
-const PALETTE = [
-  { name: "Red", hex: "#FF6B6B" },
-  { name: "Pink", hex: "#FF8FB1" },
-  { name: "Orange", hex: "#FFA94D" },
-  { name: "Yellow", hex: "#FFD93D" },
-  { name: "Green", hex: "#6BCB77" },
-  { name: "Light Green", hex: "#B2F2BB" },
-  { name: "Blue", hex: "#4FC3F7" },
-  { name: "Sky Blue", hex: "#A5D8FF" },
-  { name: "Purple", hex: "#9775FA" },
-  { name: "Violet", hex: "#DA77F2" },
-  { name: "Brown", hex: "#A97455" },
-  { name: "Black", hex: "#2B2B2B" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Gray", hex: "#ADB5BD" }
-];
-
-
-/* =========================================================
    REFERENCE COLORS
    ========================================================= */
 
@@ -292,26 +602,21 @@ const REFERENCE_COLORS = {
     stem: "Green",
     leaf1: "Green",
     leaf2: "Green",
-
     petal1: "Pink",
     petal2: "Pink",
     petal3: "Pink",
     petal4: "Pink",
     petal5: "Pink",
-
     center: "Yellow"
   },
 
   butterfly: {
     "wing-tl": "Purple",
     "wing-tr": "Purple",
-
     "wing-bl": "Pink",
     "wing-br": "Pink",
-
     "antenna-l": "Black",
     "antenna-r": "Black",
-
     body: "Black"
   },
 
@@ -320,10 +625,8 @@ const REFERENCE_COLORS = {
     band2: "Orange",
     band3: "Yellow",
     band4: "Green",
-
     cloud1: "White",
     cloud2: "White",
-
     sun: "Yellow"
   },
 
@@ -331,13 +634,10 @@ const REFERENCE_COLORS = {
     roof: "Red",
     wall: "Yellow",
     door: "Brown",
-
     "window-l": "Sky Blue",
     "window-r": "Sky Blue",
-
     "tree-crown": "Green",
     "tree-trunk": "Brown",
-
     grass: "Green"
   },
 
@@ -345,11 +645,8 @@ const REFERENCE_COLORS = {
     tail: "Orange",
     "fin-top": "Orange",
     "fin-bottom": "Orange",
-
     body: "Blue",
-
     eye: "Black",
-
     bubble1: "Sky Blue",
     bubble2: "Sky Blue",
     bubble3: "Sky Blue"
@@ -358,188 +655,182 @@ const REFERENCE_COLORS = {
   apple: {
     "apple-left": "Red",
     "apple-right": "Red",
-
     leaf: "Green",
     stem: "Brown",
-
     shine: "White"
   }
 };
 
 
 /* =========================================================
-   SAVE KEY
-   ========================================================= */
-
-const SAVE_KEY = "colorAndPaintSave_v3";
-
-
-/* =========================================================
-   STATE
+   GAME STATE
    ========================================================= */
 
 let state = {
-
   pictureIndex: 0,
-
-  mode: "paint",
-
   selectedColorHex: null,
-
   selectedColorName: null,
-
-  score: 0,
-
+  mode: "paint",
   colors: {},
-
   correctRegions: {},
-
-  challengeMode: false,
-
-  challengeTargets: {},
-
-  showingAfter: true
+  score: 0,
+  challengeMode: false
 };
 
 
 /* =========================================================
-   DOM ELEMENTS
+   DOM VARIABLES
    ========================================================= */
 
-const svgEl =
-  document.getElementById("coloring-svg");
-
-const paletteGrid =
-  document.getElementById("palette-grid");
-
-const galleryGrid =
-  document.getElementById("gallery-grid");
-
-const selectedColorLabel =
-  document.getElementById("selected-color-label");
-
-const levelValue =
-  document.getElementById("level-value");
-
-const progressFill =
-  document.getElementById("progress-fill");
-
-const progressValue =
-  document.getElementById("progress-value");
-
-const coloredCountEl =
-  document.getElementById("colored-count");
-
-const totalCountEl =
-  document.getElementById("total-count");
-
-const scoreValue =
-  document.getElementById("score-value");
-
-const paintBtn =
-  document.getElementById("paint-btn");
-
-const eraserBtn =
-  document.getElementById("eraser-btn");
-
-const challengeBtn =
-  document.getElementById("challenge-btn");
-
-const challengeBanner =
-  document.getElementById("challenge-banner");
-
-const challengeText =
-  document.getElementById("challenge-text");
-
-const resetBtn =
-  document.getElementById("reset-btn");
-
-const newPictureBtn =
-  document.getElementById("new-picture-btn");
-
-const clearProgressBtn =
-  document.getElementById("clear-progress-btn");
-
-const beforeAfterBtn =
-  document.getElementById("before-after-btn");
-
-const completionOverlay =
-  document.getElementById("completion-overlay");
-
-const finalScoreEl =
-  document.getElementById("final-score");
-
-const nextPictureBtn =
-  document.getElementById("next-picture-btn");
-
-const sparkleLayer =
-  document.getElementById("sparkle-layer");
-
-const confettiLayer =
-  document.getElementById("confetti-layer");
-
-const toastEl =
-  document.getElementById("toast");
-
-
-const SVG_NS =
-  "http://www.w3.org/2000/svg";
-
-
-const prefersReducedMotion =
-  window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
+let svgEl;
+let paletteGrid;
+let galleryGrid;
+let selectedColorLabel;
+let levelValue;
+let progressFill;
+let progressValue;
+let coloredCountEl;
+let totalCountEl;
+let scoreValue;
+let paintBtn;
+let eraserBtn;
+let challengeBtn;
+let challengeBanner;
+let challengeText;
+let resetBtn;
+let newPictureBtn;
+let clearProgressBtn;
+let completionOverlay;
+let finalScoreEl;
+let nextPictureBtn;
+let sparkleLayer;
+let confettiLayer;
+let toastEl;
+let referenceSvgEl;
 
 
 /* =========================================================
-   REFERENCE SVG
-   ========================================================= */
-
-let referenceSvgEl = null;
-
-
-/* =========================================================
-   INITIALIZATION
+   INITIALIZE
    ========================================================= */
 
 function init() {
 
+  svgEl = document.getElementById("coloring-svg");
+  paletteGrid = document.getElementById("palette-grid");
+  galleryGrid = document.getElementById("gallery-grid");
+
+  selectedColorLabel =
+    document.getElementById("selected-color-label");
+
+  levelValue =
+    document.getElementById("level-value");
+
+  progressFill =
+    document.getElementById("progress-fill");
+
+  progressValue =
+    document.getElementById("progress-value");
+
+  coloredCountEl =
+    document.getElementById("colored-count");
+
+  totalCountEl =
+    document.getElementById("total-count");
+
+  scoreValue =
+    document.getElementById("score-value");
+
+  paintBtn =
+    document.getElementById("paint-btn");
+
+  eraserBtn =
+    document.getElementById("eraser-btn");
+
+  challengeBtn =
+    document.getElementById("challenge-btn");
+
+  challengeBanner =
+    document.getElementById("challenge-banner");
+
+  challengeText =
+    document.getElementById("challenge-text");
+
+  resetBtn =
+    document.getElementById("reset-btn");
+
+  newPictureBtn =
+    document.getElementById("new-picture-btn");
+
+  clearProgressBtn =
+    document.getElementById("clear-progress-btn");
+
+  completionOverlay =
+    document.getElementById("completion-overlay");
+
+  finalScoreEl =
+    document.getElementById("final-score");
+
+  nextPictureBtn =
+    document.getElementById("next-picture-btn");
+
+  sparkleLayer =
+    document.getElementById("sparkle-layer");
+
+  confettiLayer =
+    document.getElementById("confetti-layer");
+
+  toastEl =
+    document.getElementById("toast");
+
+
   buildPalette();
-
   buildGallery();
-
-  attachControlEvents();
-
   buildReferencePanel();
-
-  const restored =
-    loadFromStorage();
+  attachEvents();
 
 
-  loadPicture(
-    restored
-      ? restored.pictureIndex
-      : 0,
-
-    !restored
-  );
+  const saved =
+    loadGame();
 
 
-  if (restored) {
+  if (saved) {
+
+    state.pictureIndex =
+      Number.isInteger(saved.pictureIndex)
+        ? saved.pictureIndex
+        : 0;
 
     state.colors =
-      restored.colors || {};
+      saved.colors || {};
 
-    renderSVG();
+    state.correctRegions =
+      saved.correctRegions || {};
 
-    applyStoredColors();
+    state.score =
+      saved.score || 0;
 
-    recalculateCorrectness();
   }
 
 
+  loadPicture(
+    state.pictureIndex,
+    false
+  );
+
+
+  /* Always start with completion popup hidden */
+  completionOverlay.hidden = true;
+
   updateHUD();
+}
+
+
+/* =========================================================
+   CURRENT PICTURE
+   ========================================================= */
+
+function currentPicture() {
+  return PICTURES[state.pictureIndex];
 }
 
 
@@ -551,44 +842,34 @@ function buildPalette() {
 
   paletteGrid.innerHTML = "";
 
-
-  PALETTE.forEach((color) => {
+  PALETTE.forEach(color => {
 
     const button =
       document.createElement("button");
 
-
     button.className =
       "color-swatch";
-
 
     button.style.background =
       color.hex;
 
-
     button.dataset.color =
       color.hex;
-
 
     button.dataset.name =
       color.name;
 
-
     button.setAttribute(
       "aria-label",
-      "Select color " +
-      color.name
+      "Select " + color.name
     );
-
 
     button.addEventListener(
       "click",
       () => selectColor(color)
     );
 
-
     paletteGrid.appendChild(button);
-
   });
 }
 
@@ -605,20 +886,19 @@ function selectColor(color) {
     "paint";
 
 
-  refreshModeButtons();
+  document
+    .querySelectorAll(".color-swatch")
+    .forEach(button => {
 
-
-  [...paletteGrid.children]
-    .forEach((element) => {
-
-      element.classList.toggle(
+      button.classList.toggle(
         "selected",
-
-        element.dataset.color ===
-        color.hex
+        button.dataset.color === color.hex
       );
 
     });
+
+
+  refreshModeButtons();
 
 
   selectedColorLabel.textContent =
@@ -635,59 +915,221 @@ function buildGallery() {
 
   galleryGrid.innerHTML = "";
 
-
   PICTURES.forEach(
     (picture, index) => {
 
       const button =
         document.createElement("button");
 
-
       button.className =
         "gallery-item";
-
 
       button.setAttribute(
         "role",
         "option"
       );
 
-
       button.innerHTML =
         `<span class="emoji">
           ${picture.emoji}
         </span>
-        <span>
-          ${picture.name}
-        </span>`;
+        <span>${picture.name}</span>`;
 
 
       button.addEventListener(
         "click",
-        () => {
-          loadPicture(index, true);
-        }
+        () => loadPicture(index, true)
       );
 
 
       galleryGrid.appendChild(button);
-
     }
   );
+
+
+  refreshGallery();
 }
 
 
-function refreshGalleryActive() {
+function refreshGallery() {
 
   [...galleryGrid.children]
-    .forEach((element, index) => {
+    .forEach(
+      (button, index) => {
 
-      element.classList.toggle(
-        "active",
-        index === state.pictureIndex
-      );
+        button.classList.toggle(
+          "active",
+          index === state.pictureIndex
+        );
 
-    });
+      }
+    );
+}
+
+
+/* =========================================================
+   REFERENCE PANEL
+   ========================================================= */
+
+function buildReferencePanel() {
+
+  if (
+    document.getElementById(
+      "reference-panel"
+    )
+  ) {
+    return;
+  }
+
+
+  const originalParent =
+    svgEl.parentElement;
+
+
+  if (!originalParent) {
+    return;
+  }
+
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.id =
+    "reference-and-color-wrap";
+
+  wrapper.style.display =
+    "grid";
+
+  wrapper.style.gridTemplateColumns =
+    "1fr 1fr";
+
+  wrapper.style.gap =
+    "20px";
+
+  wrapper.style.width =
+    "100%";
+
+  wrapper.style.alignItems =
+    "start";
+
+
+  /* Reference */
+
+  const referencePanel =
+    document.createElement("div");
+
+  referencePanel.id =
+    "reference-panel";
+
+  referencePanel.style.background =
+    "#ffffff";
+
+  referencePanel.style.borderRadius =
+    "18px";
+
+  referencePanel.style.padding =
+    "15px";
+
+  referencePanel.style.border =
+    "2px solid #eeeeee";
+
+  referencePanel.style.boxShadow =
+    "0 8px 24px rgba(0,0,0,0.10)";
+
+  referencePanel.style.textAlign =
+    "center";
+
+
+  const referenceTitle =
+    document.createElement("div");
+
+  referenceTitle.innerHTML =
+    "🖼️ <b>REFERENCE</b>";
+
+  referenceTitle.style.fontSize =
+    "18px";
+
+  referenceTitle.style.marginBottom =
+    "10px";
+
+
+  referenceSvgEl =
+    document.createElementNS(
+      SVG_NS,
+      "svg"
+    );
+
+  referenceSvgEl.id =
+    "reference-svg";
+
+  referenceSvgEl.style.width =
+    "100%";
+
+  referenceSvgEl.style.height =
+    "auto";
+
+  referenceSvgEl.style.display =
+    "block";
+
+  referenceSvgEl.style.background =
+    "#fafafa";
+
+  referenceSvgEl.style.borderRadius =
+    "12px";
+
+
+  referencePanel.appendChild(
+    referenceTitle
+  );
+
+  referencePanel.appendChild(
+    referenceSvgEl
+  );
+
+
+  /* Coloring */
+
+  const coloringPanel =
+    document.createElement("div");
+
+  const coloringTitle =
+    document.createElement("div");
+
+  coloringTitle.innerHTML =
+    "🎨 <b>COLOR THIS</b>";
+
+  coloringTitle.style.fontSize =
+    "18px";
+
+  coloringTitle.style.textAlign =
+    "center";
+
+  coloringTitle.style.marginBottom =
+    "10px";
+
+
+  coloringPanel.appendChild(
+    coloringTitle
+  );
+
+  coloringPanel.appendChild(
+    svgEl
+  );
+
+
+  wrapper.appendChild(
+    referencePanel
+  );
+
+  wrapper.appendChild(
+    coloringPanel
+  );
+
+
+  originalParent.replaceChild(
+    wrapper,
+    svgEl
+  );
 }
 
 
@@ -695,10 +1137,15 @@ function refreshGalleryActive() {
    LOAD PICTURE
    ========================================================= */
 
-function loadPicture(
-  index,
-  resetColors
-) {
+function loadPicture(index, resetColors) {
+
+  if (
+    index < 0 ||
+    index >= PICTURES.length
+  ) {
+    index = 0;
+  }
+
 
   state.pictureIndex =
     index;
@@ -707,49 +1154,26 @@ function loadPicture(
   if (resetColors) {
 
     state.colors = {};
-
     state.correctRegions = {};
-
     state.score = 0;
 
   }
 
 
-  state.challengeTargets = {};
-
-  state.showingAfter = true;
+  completionOverlay.hidden =
+    true;
 
 
   renderSVG();
-
   renderReferenceSVG();
-
-  refreshGalleryActive();
-
-
-  if (state.challengeMode) {
-
-    generateChallengeTargets();
-
-  }
-
-
+  refreshGallery();
   updateHUD();
-
-  saveToStorage();
-}
-
-
-function currentPicture() {
-
-  return PICTURES[
-    state.pictureIndex
-  ];
+  saveGame();
 }
 
 
 /* =========================================================
-   MAIN COLORING SVG
+   USER SVG
    ========================================================= */
 
 function renderSVG() {
@@ -764,11 +1188,12 @@ function renderSVG() {
   );
 
 
-  svgEl.innerHTML = "";
+  svgEl.innerHTML =
+    "";
 
 
   picture.regions.forEach(
-    (region) => {
+    region => {
 
       const element =
         document.createElementNS(
@@ -837,6 +1262,16 @@ function renderSVG() {
           savedColor || "#FFFFFF"
         );
 
+        element.setAttribute(
+          "stroke",
+          "#333333"
+        );
+
+        element.setAttribute(
+          "stroke-width",
+          "3"
+        );
+
       } else {
 
         element.setAttribute(
@@ -848,12 +1283,13 @@ function renderSVG() {
           "stroke-linecap",
           "round"
         );
+
       }
 
 
       element.addEventListener(
         "click",
-        (event) => {
+        event => {
 
           handleRegionClick(
             region,
@@ -867,7 +1303,7 @@ function renderSVG() {
 
       element.addEventListener(
         "keydown",
-        (event) => {
+        event => {
 
           if (
             event.key === "Enter" ||
@@ -888,7 +1324,9 @@ function renderSVG() {
       );
 
 
-      svgEl.appendChild(element);
+      svgEl.appendChild(
+        element
+      );
 
     }
   );
@@ -896,202 +1334,7 @@ function renderSVG() {
 
 
 /* =========================================================
-   REFERENCE PANEL
-   ========================================================= */
-
-function buildReferencePanel() {
-
-  if (
-    document.getElementById(
-      "reference-panel"
-    )
-  ) {
-    return;
-  }
-
-
-  const originalParent =
-    svgEl.parentElement;
-
-
-  if (!originalParent) {
-    return;
-  }
-
-
-  const wrapper =
-    document.createElement("div");
-
-
-  wrapper.id =
-    "reference-and-color-wrap";
-
-
-  wrapper.style.display =
-    "grid";
-
-
-  wrapper.style.gridTemplateColumns =
-    "1fr 1fr";
-
-
-  wrapper.style.gap =
-    "20px";
-
-
-  wrapper.style.alignItems =
-    "start";
-
-
-  wrapper.style.width =
-    "100%";
-
-
-  const referencePanel =
-    document.createElement("div");
-
-
-  referencePanel.id =
-    "reference-panel";
-
-
-  referencePanel.style.background =
-    "#ffffff";
-
-
-  referencePanel.style.borderRadius =
-    "18px";
-
-
-  referencePanel.style.padding =
-    "15px";
-
-
-  referencePanel.style.boxShadow =
-    "0 8px 24px rgba(0,0,0,0.10)";
-
-
-  referencePanel.style.border =
-    "2px solid #eeeeee";
-
-
-  referencePanel.style.textAlign =
-    "center";
-
-
-  const referenceTitle =
-    document.createElement("div");
-
-
-  referenceTitle.innerHTML =
-    "🖼️ <b>REFERENCE</b>";
-
-
-  referenceTitle.style.fontSize =
-    "18px";
-
-
-  referenceTitle.style.marginBottom =
-    "10px";
-
-
-  referenceSvgEl =
-    document.createElementNS(
-      SVG_NS,
-      "svg"
-    );
-
-
-  referenceSvgEl.id =
-    "reference-svg";
-
-
-  referenceSvgEl.style.width =
-    "100%";
-
-
-  referenceSvgEl.style.height =
-    "auto";
-
-
-  referenceSvgEl.style.display =
-    "block";
-
-
-  referenceSvgEl.style.background =
-    "#fafafa";
-
-
-  referenceSvgEl.style.borderRadius =
-    "12px";
-
-
-  referencePanel.appendChild(
-    referenceTitle
-  );
-
-
-  referencePanel.appendChild(
-    referenceSvgEl
-  );
-
-
-  const coloringPanel =
-    document.createElement("div");
-
-
-  const coloringTitle =
-    document.createElement("div");
-
-
-  coloringTitle.innerHTML =
-    "🎨 <b>COLOR THIS</b>";
-
-
-  coloringTitle.style.fontSize =
-    "18px";
-
-
-  coloringTitle.style.textAlign =
-    "center";
-
-
-  coloringTitle.style.marginBottom =
-    "10px";
-
-
-  coloringPanel.appendChild(
-    coloringTitle
-  );
-
-
-  coloringPanel.appendChild(
-    svgEl
-  );
-
-
-  wrapper.appendChild(
-    referencePanel
-  );
-
-
-  wrapper.appendChild(
-    coloringPanel
-  );
-
-
-  originalParent.replaceChild(
-    wrapper,
-    svgEl
-  );
-
-
-  renderReferenceSVG();
-}
-
-
-/* =========================================================
-   DRAW REFERENCE IMAGE
+   REFERENCE SVG
    ========================================================= */
 
 function renderReferenceSVG() {
@@ -1111,11 +1354,12 @@ function renderReferenceSVG() {
   );
 
 
-  referenceSvgEl.innerHTML = "";
+  referenceSvgEl.innerHTML =
+    "";
 
 
   picture.regions.forEach(
-    (region) => {
+    region => {
 
       const element =
         document.createElementNS(
@@ -1138,14 +1382,15 @@ function renderReferenceSVG() {
       );
 
 
-      const colorName =
+      const correctColor =
         getCorrectColor(region);
 
 
       const paletteColor =
         PALETTE.find(
-          (color) =>
-            color.name === colorName
+          color =>
+            color.name ===
+            correctColor
         );
 
 
@@ -1167,9 +1412,19 @@ function renderReferenceSVG() {
       );
 
 
-      if (
-        target === "stroke"
-      ) {
+      if (target === "fill") {
+
+        element.setAttribute(
+          "stroke",
+          "#333333"
+        );
+
+        element.setAttribute(
+          "stroke-width",
+          "3"
+        );
+
+      } else {
 
         element.setAttribute(
           "stroke-linecap",
@@ -1189,7 +1444,7 @@ function renderReferenceSVG() {
 
 
 /* =========================================================
-   USER COLORING
+   COLOR REGION
    ========================================================= */
 
 function handleRegionClick(
@@ -1216,17 +1471,11 @@ function handleRegionClick(
   ) {
 
     showToast(
-      "Pick a color first! 🎨"
+      "🎨 Pick a color first!"
     );
 
     return;
   }
-
-
-  const wasEmpty =
-    !state.colors[
-      region.id
-    ];
 
 
   colorRegion(
@@ -1268,38 +1517,14 @@ function handleRegionClick(
   }
 
 
-  if (
-    wasEmpty &&
-    !prefersReducedMotion
-  ) {
-
-    spawnSparkle(event);
-
-  }
-
-
-  if (state.challengeMode) {
-
-    delete state.challengeTargets[
-      region.id
-    ];
-
-    advanceChallenge();
-
-  }
-
+  spawnSparkle(event);
 
   updateHUD();
-
-  saveToStorage();
+  saveGame();
 
   checkCompletion();
 }
 
-
-/* =========================================================
-   COLOR REGION
-   ========================================================= */
 
 function colorRegion(
   region,
@@ -1357,25 +1582,21 @@ function eraseRegion(
 
 
   calculateScore();
-
   updateHUD();
-
-  saveToStorage();
+  saveGame();
 
 
   showToast(
-    "Erased!"
+    "🧹 Erased!"
   );
 }
 
 
 /* =========================================================
-   CORRECT COLOR
+   GET CORRECT COLOR
    ========================================================= */
 
-function getCorrectColor(
-  region
-) {
+function getCorrectColor(region) {
 
   const picture =
     currentPicture();
@@ -1384,50 +1605,30 @@ function getCorrectColor(
   return (
     REFERENCE_COLORS[
       picture.id
-    ]?.[
-      region.id
-    ] || null
-  );
+    ] &&
+    REFERENCE_COLORS[
+      picture.id
+    ][region.id]
+  ) || null;
 }
 
 
 /* =========================================================
-   SCORING
+   SCORE
    ========================================================= */
-
-function totalRegions() {
-
-  return currentPicture()
-    .regions.length;
-}
-
-
-function coloredRegions() {
-
-  return Object.keys(
-    state.colors
-  ).length;
-}
-
-
-function correctColoredRegions() {
-
-  return Object.values(
-    state.correctRegions
-  ).filter(
-    Boolean
-  ).length;
-}
-
 
 function calculateScore() {
 
   const total =
-    totalRegions();
+    currentPicture().regions.length;
 
 
   const correct =
-    correctColoredRegions();
+    Object.values(
+      state.correctRegions
+    ).filter(
+      value => value === true
+    ).length;
 
 
   if (total === 0) {
@@ -1440,8 +1641,7 @@ function calculateScore() {
 
   state.score =
     Math.round(
-      (correct / total) *
-      100
+      (correct / total) * 100
     );
 }
 
@@ -1452,20 +1652,24 @@ function calculateScore() {
 
 function updateHUD() {
 
+  calculateScore();
+
+
   const total =
-    totalRegions();
+    currentPicture().regions.length;
 
 
   const colored =
-    coloredRegions();
+    Object.keys(
+      state.colors
+    ).length;
 
 
-  const percentage =
+  const progress =
     total === 0
       ? 0
       : Math.round(
-          (colored / total) *
-          100
+          (colored / total) * 100
         );
 
 
@@ -1474,11 +1678,11 @@ function updateHUD() {
 
 
   progressFill.style.width =
-    percentage + "%";
+    progress + "%";
 
 
   progressValue.textContent =
-    percentage + "%";
+    progress + "%";
 
 
   coloredCountEl.textContent =
@@ -1516,50 +1720,39 @@ function updateHUD() {
 
 function checkCompletion() {
 
+  const total =
+    currentPicture().regions.length;
+
+
+  const colored =
+    Object.keys(
+      state.colors
+    ).length;
+
+
   if (
-    coloredRegions() ===
-    totalRegions()
+    total > 0 &&
+    colored === total
   ) {
 
     calculateScore();
 
-    updateHUD();
 
-    saveToStorage();
+    finalScoreEl.textContent =
+      state.score;
 
 
     setTimeout(
-      showCompletion,
-      prefersReducedMotion
-        ? 0
-        : 300
+      () => {
+
+        completionOverlay.hidden =
+          false;
+
+        spawnConfetti();
+
+      },
+      300
     );
-  }
-}
-
-
-function showCompletion() {
-
-  calculateScore();
-
-
-  finalScoreEl.textContent =
-    Math.min(
-      state.score,
-      100
-    );
-
-
-  completionOverlay.hidden =
-    false;
-
-
-  if (
-    !prefersReducedMotion
-  ) {
-
-    spawnConfetti();
-
   }
 }
 
@@ -1611,7 +1804,7 @@ function refreshModeButtons() {
    BUTTON EVENTS
    ========================================================= */
 
-function attachControlEvents() {
+function attachEvents() {
 
   paintBtn.addEventListener(
     "click",
@@ -1636,7 +1829,7 @@ function attachControlEvents() {
       refreshModeButtons();
 
       showToast(
-        "Eraser Selected"
+        "🧹 Eraser selected"
       );
 
     }
@@ -1658,10 +1851,10 @@ function attachControlEvents() {
         state.challengeMode
       ) {
 
-        generateChallengeTargets();
-
         challengeBanner.hidden =
           false;
+
+        showChallenge();
 
       } else {
 
@@ -1686,7 +1879,6 @@ function attachControlEvents() {
 
       let index;
 
-
       do {
 
         index =
@@ -1697,8 +1889,7 @@ function attachControlEvents() {
 
       } while (
         index ===
-          state.pictureIndex &&
-        PICTURES.length > 1
+        state.pictureIndex
       );
 
 
@@ -1709,7 +1900,7 @@ function attachControlEvents() {
 
 
       showToast(
-        "New Picture!"
+        "🎲 New Picture!"
       );
 
     }
@@ -1725,82 +1916,23 @@ function attachControlEvents() {
       );
 
 
-      state.score = 0;
-
       state.colors = {};
-
       state.correctRegions = {};
+      state.score = 0;
 
 
       renderSVG();
-
       renderReferenceSVG();
-
       updateHUD();
 
 
+      completionOverlay.hidden =
+        true;
+
+
       showToast(
-        "Progress cleared"
+        "🗑 Progress cleared"
       );
-
-    }
-  );
-
-
-  beforeAfterBtn.addEventListener(
-    "click",
-    () => {
-
-      state.showingAfter =
-        !state.showingAfter;
-
-
-      if (
-        state.showingAfter
-      ) {
-
-        applyStoredColors();
-
-      } else {
-
-        [
-          ...svgEl.querySelectorAll(
-            ".region"
-          )
-        ].forEach(
-          (element) => {
-
-            const region =
-              currentPicture()
-                .regions
-                .find(
-                  (item) =>
-                    item.id ===
-                    element.dataset
-                      .regionId
-                );
-
-
-            if (!region) {
-              return;
-            }
-
-
-            const target =
-              region.colorTarget ===
-              "stroke"
-                ? "stroke"
-                : "fill";
-
-
-            element.setAttribute(
-              target,
-              "#FFFFFF"
-            );
-
-          }
-        );
-      }
 
     }
   );
@@ -1814,14 +1946,9 @@ function attachControlEvents() {
         true;
 
 
-      confettiLayer.innerHTML =
-        "";
-
-
       const nextIndex =
         (
-          state.pictureIndex +
-          1
+          state.pictureIndex + 1
         ) %
         PICTURES.length;
 
@@ -1837,148 +1964,60 @@ function attachControlEvents() {
 
 
 /* =========================================================
-   APPLY SAVED COLORS
+   RESET
    ========================================================= */
 
-function applyStoredColors() {
+function resetPicture() {
 
-  const picture =
-    currentPicture();
-
-
-  picture.regions.forEach(
-    (region) => {
-
-      const element =
-        svgEl.querySelector(
-          `[data-region-id="${region.id}"]`
-        );
+  state.colors = {};
+  state.correctRegions = {};
+  state.score = 0;
 
 
-      if (!element) {
-        return;
-      }
+  completionOverlay.hidden =
+    true;
 
 
-      const target =
-        region.colorTarget ===
-        "stroke"
-          ? "stroke"
-          : "fill";
+  renderSVG();
+  renderReferenceSVG();
+  updateHUD();
+  saveGame();
 
 
-      const color =
-        state.colors[
-          region.id
-        ];
-
-
-      if (color) {
-
-        element.setAttribute(
-          target,
-          color
-        );
-
-      }
-
-    }
+  showToast(
+    "↻ Picture reset"
   );
 }
 
 
 /* =========================================================
-   CHALLENGE MODE
+   CHALLENGE
    ========================================================= */
 
-function generateChallengeTargets() {
+function showChallenge() {
 
   const picture =
     currentPicture();
-
-
-  state.challengeTargets =
-    {};
-
-
-  picture.regions.forEach(
-    (region) => {
-
-      if (
-        !state.colors[
-          region.id
-        ]
-      ) {
-
-        state.challengeTargets[
-          region.id
-        ] =
-          getCorrectColor(
-            region
-          );
-
-      }
-
-    }
-  );
-
-
-  showNextChallengeInstruction();
-}
-
-
-function advanceChallenge() {
-
-  if (
-    Object.keys(
-      state.challengeTargets
-    ).length === 0
-  ) {
-
-    challengeBanner.hidden =
-      true;
-
-    return;
-  }
-
-
-  showNextChallengeInstruction();
-}
-
-
-function showNextChallengeInstruction() {
-
-  const picture =
-    currentPicture();
-
-
-  const remainingId =
-    Object.keys(
-      state.challengeTargets
-    )[0];
-
-
-  if (!remainingId) {
-
-    challengeBanner.hidden =
-      true;
-
-    return;
-  }
 
 
   const region =
     picture.regions.find(
-      (item) =>
-        item.id ===
-        remainingId
+      item =>
+        !state.colors[item.id]
     );
 
 
+  if (!region) {
+
+    challengeBanner.hidden =
+      true;
+
+    return;
+  }
+
+
   const color =
-    state.challengeTargets[
-      remainingId
-    ];
+    getCorrectColor(region);
 
 
   challengeText.textContent =
@@ -1987,50 +2026,6 @@ function showNextChallengeInstruction() {
     " " +
     color.toUpperCase() +
     ".";
-
-
-  challengeBanner.hidden =
-    false;
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-function resetPicture() {
-
-  state.colors = {};
-
-  state.correctRegions = {};
-
-  state.score = 0;
-
-  state.challengeTargets = {};
-
-
-  renderSVG();
-
-  renderReferenceSVG();
-
-
-  if (
-    state.challengeMode
-  ) {
-
-    generateChallengeTargets();
-
-  }
-
-
-  updateHUD();
-
-  saveToStorage();
-
-
-  showToast(
-    "Picture reset"
-  );
 }
 
 
@@ -2038,7 +2033,7 @@ function resetPicture() {
    STORAGE
    ========================================================= */
 
-function saveToStorage() {
+function saveGame() {
 
   try {
 
@@ -2046,7 +2041,6 @@ function saveToStorage() {
       SAVE_KEY,
 
       JSON.stringify({
-
         pictureIndex:
           state.pictureIndex,
 
@@ -2058,37 +2052,36 @@ function saveToStorage() {
 
         score:
           state.score
-
       })
     );
 
   } catch (error) {
 
     console.log(
-      "Storage unavailable"
+      "Saving unavailable"
     );
 
   }
 }
 
 
-function loadFromStorage() {
+function loadGame() {
 
   try {
 
-    const raw =
+    const saved =
       localStorage.getItem(
         SAVE_KEY
       );
 
 
-    if (!raw) {
+    if (!saved) {
       return null;
     }
 
 
     return JSON.parse(
-      raw
+      saved
     );
 
   } catch (error) {
@@ -2100,167 +2093,47 @@ function loadFromStorage() {
 
 
 /* =========================================================
-   RECALCULATE SAVED COLORS
-   ========================================================= */
-
-function recalculateCorrectness() {
-
-  state.correctRegions =
-    {};
-
-
-  const picture =
-    currentPicture();
-
-
-  picture.regions.forEach(
-    (region) => {
-
-      const savedHex =
-        state.colors[
-          region.id
-        ];
-
-
-      if (!savedHex) {
-        return;
-      }
-
-
-      const selected =
-        PALETTE.find(
-          (color) =>
-            color.hex ===
-            savedHex
-        );
-
-
-      if (!selected) {
-        return;
-      }
-
-
-      state.correctRegions[
-        region.id
-      ] =
-        selected.name ===
-        getCorrectColor(
-          region
-        );
-
-    }
-  );
-
-
-  calculateScore();
-}
-
-
-/* =========================================================
    SPARKLE
    ========================================================= */
 
 function spawnSparkle(event) {
 
-  if (
-    prefersReducedMotion
-  ) {
+  if (!sparkleLayer) {
     return;
   }
 
 
-  const wrapRect =
-    sparkleLayer
-      .getBoundingClientRect();
-
-
-  let x =
-    wrapRect.width / 2;
-
-
-  let y =
-    wrapRect.height / 2;
-
-
-  if (
-    event &&
-    event.clientX
-  ) {
-
-    x =
-      event.clientX -
-      wrapRect.left;
-
-
-    y =
-      event.clientY -
-      wrapRect.top;
-
-  }
-
-
-  const emojiSet =
-    [
-      "✨",
-      "⭐",
-      "💫"
-    ];
-
-
-  for (
-    let i = 0;
-    i < 3;
-    i++
-  ) {
-
-    const sparkle =
-      document.createElement(
-        "span"
-      );
-
-
-    sparkle.className =
-      "sparkle";
-
-
-    sparkle.textContent =
-      emojiSet[
-        Math.floor(
-          Math.random() *
-          emojiSet.length
-        )
-      ];
-
-
-    sparkle.style.left =
-      (
-        x +
-        Math.random() * 30 -
-        15
-      ) +
-      "px";
-
-
-    sparkle.style.top =
-      (
-        y +
-        Math.random() * 30 -
-        15
-      ) +
-      "px";
-
-
-    sparkleLayer.appendChild(
-      sparkle
+  const sparkle =
+    document.createElement(
+      "span"
     );
 
 
-    setTimeout(
-      () => sparkle.remove(),
-      700
-    );
+  sparkle.className =
+    "sparkle";
 
-  }
+
+  sparkle.textContent =
+    "✨";
+
+
+  sparkle.style.left =
+    "50%";
+
+
+  sparkle.style.top =
+    "50%";
+
+
+  sparkleLayer.appendChild(
+    sparkle
+  );
+
+
+  setTimeout(
+    () => sparkle.remove(),
+    700
+  );
 }
 
 
@@ -2270,15 +2143,24 @@ function spawnSparkle(event) {
 
 function spawnConfetti() {
 
-  const colors =
-    [
-      "#FF6FA5",
-      "#FFD93D",
-      "#4FC3F7",
-      "#6BCB77",
-      "#9775FA",
-      "#FFA94D"
-    ];
+  if (!confettiLayer) {
+    return;
+  }
+
+
+  confettiLayer.innerHTML =
+    "";
+
+
+  const colors = [
+    "#FF6B6B",
+    "#FF8FB1",
+    "#FFD93D",
+    "#6BCB77",
+    "#4FC3F7",
+    "#9775FA",
+    "#FFA94D"
+  ];
 
 
   for (
@@ -2315,25 +2197,17 @@ function spawnConfetti() {
       (
         2 +
         Math.random() * 1.5
-      ) +
-      "s";
+      ) + "s";
 
 
     piece.style.animationDelay =
       (
         Math.random() * 0.4
-      ) +
-      "s";
+      ) + "s";
 
 
     confettiLayer.appendChild(
       piece
-    );
-
-
-    setTimeout(
-      () => piece.remove(),
-      4000
     );
 
   }
@@ -2346,8 +2220,12 @@ function spawnConfetti() {
 
 let toastTimer = null;
 
-
 function showToast(message) {
+
+  if (!toastEl) {
+    return;
+  }
+
 
   toastEl.textContent =
     message;
@@ -2355,17 +2233,6 @@ function showToast(message) {
 
   toastEl.hidden =
     false;
-
-
-  toastEl.style.animation =
-    "none";
-
-
-  void toastEl.offsetWidth;
-
-
-  toastEl.style.animation =
-    "";
 
 
   clearTimeout(
@@ -2381,13 +2248,13 @@ function showToast(message) {
           true;
 
       },
-      2200
+      1800
     );
 }
 
 
 /* =========================================================
-   START GAME
+   START
    ========================================================= */
 
 document.addEventListener(
